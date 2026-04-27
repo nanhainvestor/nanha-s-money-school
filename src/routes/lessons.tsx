@@ -20,11 +20,11 @@ const tracks = [
     age: "Umar 6–8 saal",
     accent: "bg-primary-soft text-primary",
     lessons: [
-      { title: "Needs vs. Wants", desc: "Nanha cycle chahta hai magar uske paas sirf Rs 50 hain. Ab kya kare?", free: true },
-      { title: "Where Money Comes From", desc: "Ammi abu kaam kyun karte hain — aur naukri kya hoti hai?", free: true },
-      { title: "The Magic of the Piggy Bank", desc: "Bachat = mustaqbil ka aap khud aap ka shukriya.", free: false },
-      { title: "Counting Coins", desc: "Aik mazedaar bazar ki sair (Rs aur paisay).", free: false },
-      { title: "Sharing & Giving", desc: "Meharbani bhi ek qisam ki daulat hai.", free: false },
+      { title: "Needs vs. Wants", desc: "Nanha cycle chahta hai magar uske paas sirf Rs 50 hain. Ab kya kare?", slug: "needs-vs-wants", free: true },
+      { title: "Where Money Comes From", desc: "Ammi abu kaam kyun karte hain — aur naukri kya hoti hai?", slug: "where-money-comes-from", free: true },
+      { title: "The Magic of the Piggy Bank", desc: "Bachat = mustaqbil ka aap khud aap ka shukriya.", slug: "piggy-bank-magic", free: true },
+      { title: "Counting Coins", desc: "Aik mazedaar bazar ki sair (Rs aur paisay).", slug: "counting-coins", free: true },
+      { title: "Sharing & Giving", desc: "Meharbani bhi ek qisam ki daulat hai.", slug: "sharing-giving", free: true },
     ],
   },
   {
@@ -32,10 +32,10 @@ const tracks = [
     age: "Umar 9–11 saal",
     accent: "bg-accent-soft text-accent-foreground",
     lessons: [
-      { title: "The Purpose of Money", desc: "Baray khwab + chhote haftawar qadam.", free: true },
-      { title: "Budgeting Like a Boss", desc: "50-30-20 ka usool, lekin bachon ke saiz mein.", free: false },
-      { title: "What Is a Bank?", desc: "Aik dosthana imarat jo aap ke paisay ki nigrani karti hai.", free: false },
-      { title: "Earning Beyond Pocket Money", desc: "Aise side-hustle khayalat jo lemonade stand nahi hain.", free: false },
+      { title: "The Purpose of Money", desc: "Baray khwab + chhote haftawar qadam.", slug: "purpose-of-money", free: true },
+      { title: "Budgeting Like a Boss", desc: "50-30-20 ka usool, lekin bachon ke saiz mein.", slug: "budgeting-like-a-boss", free: true },
+      { title: "What Is a Bank?", desc: "Aik dosthana imarat jo aap ke paisay ki nigrani karti hai.", slug: "what-is-a-bank", free: true },
+      { title: "Earning Beyond Pocket Money", desc: "Aise side-hustle khayalat jo lemonade stand nahi hain.", slug: "earning-beyond-pocket-money", free: true },
     ],
   },
   {
@@ -43,10 +43,10 @@ const tracks = [
     age: "Umar 12–14 saal",
     accent: "bg-foreground text-background",
     lessons: [
-      { title: "What Is Inflation?", desc: "Wahi chocolate aglay saal mehngi kyun hoti hai? (Rs 50 → Rs 70)", free: true },
-      { title: "Stocks Made Simple", desc: "Aik bohat bari company ka chhota sa hissa rakhna.", free: false },
-      { title: "Compound Interest", desc: "Duniya ka 8 wan ajooba — sach mein.", free: false },
-      { title: "Smart Online Spending", desc: "Hype, ads aur 'too good to be true' pehchanna.", free: false },
+      { title: "What Is Inflation?", desc: "Wahi chocolate aglay saal mehngi kyun hoti hai? (Rs 50 → Rs 70)", slug: "what-is-inflation", free: true },
+      { title: "Stocks Made Simple", desc: "Aik bohat bari company ka chhota sa hissa rakhna.", slug: "stocks-made-simple", free: true },
+      { title: "Compound Interest", desc: "Duniya ka 8 wan ajooba — sach mein.", slug: "compound-interest", free: true },
+      { title: "Smart Online Spending", desc: "Hype, ads aur 'too good to be true' pehchanna.", slug: "smart-online-spending", free: true },
     ],
   },
 ];
