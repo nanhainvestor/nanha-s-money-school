@@ -1,6 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { Button } from "@/components/ui/button";
-import { ArrowRight, Lock, Sparkles } from "lucide-react";
+import { ArrowRight, Sparkles } from "lucide-react";
 
 export const Route = createFileRoute("/lessons")({
   head: () => ({
@@ -20,11 +20,11 @@ const tracks = [
     age: "Umar 6–8 saal",
     accent: "bg-primary-soft text-primary",
     lessons: [
-      { title: "Needs vs. Wants", desc: "Nanha cycle chahta hai magar uske paas sirf Rs 50 hain. Ab kya kare?", free: true },
-      { title: "Where Money Comes From", desc: "Ammi abu kaam kyun karte hain — aur naukri kya hoti hai?", free: true },
-      { title: "The Magic of the Piggy Bank", desc: "Bachat = mustaqbil ka aap khud aap ka shukriya.", free: false },
-      { title: "Counting Coins", desc: "Aik mazedaar bazar ki sair (Rs aur paisay).", free: false },
-      { title: "Sharing & Giving", desc: "Meharbani bhi ek qisam ki daulat hai.", free: false },
+      { title: "Needs vs. Wants", desc: "Nanha cycle chahta hai magar uske paas sirf Rs 50 hain. Ab kya kare?", slug: "needs-vs-wants", free: true },
+      { title: "Where Money Comes From", desc: "Ammi abu kaam kyun karte hain — aur naukri kya hoti hai?", slug: "where-money-comes-from", free: true },
+      { title: "The Magic of the Piggy Bank", desc: "Bachat = mustaqbil ka aap khud aap ka shukriya.", slug: "piggy-bank-magic", free: true },
+      { title: "Counting Coins", desc: "Aik mazedaar bazar ki sair (Rs aur paisay).", slug: "counting-coins", free: true },
+      { title: "Sharing & Giving", desc: "Meharbani bhi ek qisam ki daulat hai.", slug: "sharing-giving", free: true },
     ],
   },
   {
@@ -32,10 +32,10 @@ const tracks = [
     age: "Umar 9–11 saal",
     accent: "bg-accent-soft text-accent-foreground",
     lessons: [
-      { title: "The Purpose of Money", desc: "Baray khwab + chhote haftawar qadam.", free: true },
-      { title: "Budgeting Like a Boss", desc: "50-30-20 ka usool, lekin bachon ke saiz mein.", free: false },
-      { title: "What Is a Bank?", desc: "Aik dosthana imarat jo aap ke paisay ki nigrani karti hai.", free: false },
-      { title: "Earning Beyond Pocket Money", desc: "Aise side-hustle khayalat jo lemonade stand nahi hain.", free: false },
+      { title: "The Purpose of Money", desc: "Baray khwab + chhote haftawar qadam.", slug: "purpose-of-money", free: true },
+      { title: "Budgeting Like a Boss", desc: "50-30-20 ka usool, lekin bachon ke saiz mein.", slug: "budgeting-like-a-boss", free: true },
+      { title: "What Is a Bank?", desc: "Aik dosthana imarat jo aap ke paisay ki nigrani karti hai.", slug: "what-is-a-bank", free: true },
+      { title: "Earning Beyond Pocket Money", desc: "Aise side-hustle khayalat jo lemonade stand nahi hain.", slug: "earning-beyond-pocket-money", free: true },
     ],
   },
   {
@@ -43,10 +43,10 @@ const tracks = [
     age: "Umar 12–14 saal",
     accent: "bg-foreground text-background",
     lessons: [
-      { title: "What Is Inflation?", desc: "Wahi chocolate aglay saal mehngi kyun hoti hai? (Rs 50 → Rs 70)", free: true },
-      { title: "Stocks Made Simple", desc: "Aik bohat bari company ka chhota sa hissa rakhna.", free: false },
-      { title: "Compound Interest", desc: "Duniya ka 8 wan ajooba — sach mein.", free: false },
-      { title: "Smart Online Spending", desc: "Hype, ads aur 'too good to be true' pehchanna.", free: false },
+      { title: "What Is Inflation?", desc: "Wahi chocolate aglay saal mehngi kyun hoti hai? (Rs 50 → Rs 70)", slug: "what-is-inflation", free: true },
+      { title: "Stocks Made Simple", desc: "Aik bohat bari company ka chhota sa hissa rakhna.", slug: "stocks-made-simple", free: true },
+      { title: "Compound Interest", desc: "Duniya ka 8 wan ajooba — sach mein.", slug: "compound-interest", free: true },
+      { title: "Smart Online Spending", desc: "Hype, ads aur 'too good to be true' pehchanna.", slug: "smart-online-spending", free: true },
     ],
   },
 ];
@@ -77,32 +77,23 @@ function LessonsPage() {
               </div>
             </div>
             <div className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-              {track.lessons.map((l, i) => {
-                const isLive = l.title === "Needs vs. Wants";
-                const Wrapper: React.ElementType = isLive ? Link : "article";
-                const wrapperProps = isLive ? { to: "/lessons/needs-vs-wants" } : {};
-                return (
-                  <Wrapper
-                    key={l.title}
-                    {...wrapperProps}
-                    className="group relative flex flex-col rounded-3xl border border-border bg-card p-6 shadow-soft transition-all hover:-translate-y-1 hover:shadow-pop"
-                  >
-                    <div className="flex items-center justify-between">
-                      <span className="font-display text-3xl font-extrabold text-muted-foreground/40">{String(i + 1).padStart(2, "0")}</span>
-                      {l.free ? (
-                        <span className="rounded-full bg-accent px-2.5 py-0.5 text-[10px] font-bold uppercase text-accent-foreground">Free</span>
-                      ) : (
-                        <Lock className="h-4 w-4 text-muted-foreground" />
-                      )}
-                    </div>
-                    <h3 className="mt-4 text-lg font-bold">{l.title}</h3>
-                    <p className="mt-2 flex-1 text-sm text-muted-foreground">{l.desc}</p>
-                    <div className="mt-5 flex items-center gap-2 text-sm font-bold text-primary">
-                      {isLive ? "Start Lesson" : l.free ? "Coming soon" : "Save my spot"} <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
-                    </div>
-                  </Wrapper>
-                );
-              })}
+              {track.lessons.map((l, i) => (
+                <Link
+                  key={l.slug}
+                  to={`/lessons/${l.slug}` as string}
+                  className="group relative flex flex-col rounded-3xl border border-border bg-card p-6 shadow-soft transition-all hover:-translate-y-1 hover:shadow-pop"
+                >
+                  <div className="flex items-center justify-between">
+                    <span className="font-display text-3xl font-extrabold text-muted-foreground/40">{String(i + 1).padStart(2, "0")}</span>
+                    <span className="rounded-full bg-accent px-2.5 py-0.5 text-[10px] font-bold uppercase text-accent-foreground">Free</span>
+                  </div>
+                  <h3 className="mt-4 text-lg font-bold">{l.title}</h3>
+                  <p className="mt-2 flex-1 text-sm text-muted-foreground">{l.desc}</p>
+                  <div className="mt-5 flex items-center gap-2 text-sm font-bold text-primary">
+                    Start Lesson <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
+                  </div>
+                </Link>
+              ))}
             </div>
           </div>
         ))}
