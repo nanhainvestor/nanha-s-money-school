@@ -334,6 +334,18 @@ function SortGame() {
   const answered = Object.keys(picks).length;
   const done = answered === SORT_ITEMS.length;
 
+  useEffect(() => {
+    if (!done) return;
+    saveLessonProgress({
+      lessonId: "needs-vs-wants",
+      title: "Needs vs. Wants",
+      completed: true,
+      quizCorrect: correct,
+      quizTotal: SORT_ITEMS.length,
+      updatedAt: new Date().toISOString(),
+    });
+  }, [done, correct]);
+
   return (
     <section className="mx-auto max-w-5xl px-4 py-16 sm:px-6">
       <div className="text-center">
