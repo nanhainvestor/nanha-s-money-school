@@ -14,6 +14,7 @@ import { Route as NotebookRouteImport } from './routes/notebook'
 import { Route as LessonsRouteImport } from './routes/lessons'
 import { Route as AboutRouteImport } from './routes/about'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as LessonsNeedsVsWantsRouteImport } from './routes/lessons.needs-vs-wants'
 
 const ParentsRoute = ParentsRouteImport.update({
   id: '/parents',
@@ -40,41 +41,68 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const LessonsNeedsVsWantsRoute = LessonsNeedsVsWantsRouteImport.update({
+  id: '/needs-vs-wants',
+  path: '/needs-vs-wants',
+  getParentRoute: () => LessonsRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
-  '/lessons': typeof LessonsRoute
+  '/lessons': typeof LessonsRouteWithChildren
   '/notebook': typeof NotebookRoute
   '/parents': typeof ParentsRoute
+  '/lessons/needs-vs-wants': typeof LessonsNeedsVsWantsRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
-  '/lessons': typeof LessonsRoute
+  '/lessons': typeof LessonsRouteWithChildren
   '/notebook': typeof NotebookRoute
   '/parents': typeof ParentsRoute
+  '/lessons/needs-vs-wants': typeof LessonsNeedsVsWantsRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
-  '/lessons': typeof LessonsRoute
+  '/lessons': typeof LessonsRouteWithChildren
   '/notebook': typeof NotebookRoute
   '/parents': typeof ParentsRoute
+  '/lessons/needs-vs-wants': typeof LessonsNeedsVsWantsRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/about' | '/lessons' | '/notebook' | '/parents'
+  fullPaths:
+    | '/'
+    | '/about'
+    | '/lessons'
+    | '/notebook'
+    | '/parents'
+    | '/lessons/needs-vs-wants'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/about' | '/lessons' | '/notebook' | '/parents'
-  id: '__root__' | '/' | '/about' | '/lessons' | '/notebook' | '/parents'
+  to:
+    | '/'
+    | '/about'
+    | '/lessons'
+    | '/notebook'
+    | '/parents'
+    | '/lessons/needs-vs-wants'
+  id:
+    | '__root__'
+    | '/'
+    | '/about'
+    | '/lessons'
+    | '/notebook'
+    | '/parents'
+    | '/lessons/needs-vs-wants'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AboutRoute: typeof AboutRoute
-  LessonsRoute: typeof LessonsRoute
+  LessonsRoute: typeof LessonsRouteWithChildren
   NotebookRoute: typeof NotebookRoute
   ParentsRoute: typeof ParentsRoute
 }
@@ -116,13 +144,31 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/lessons/needs-vs-wants': {
+      id: '/lessons/needs-vs-wants'
+      path: '/needs-vs-wants'
+      fullPath: '/lessons/needs-vs-wants'
+      preLoaderRoute: typeof LessonsNeedsVsWantsRouteImport
+      parentRoute: typeof LessonsRoute
+    }
   }
 }
+
+interface LessonsRouteChildren {
+  LessonsNeedsVsWantsRoute: typeof LessonsNeedsVsWantsRoute
+}
+
+const LessonsRouteChildren: LessonsRouteChildren = {
+  LessonsNeedsVsWantsRoute: LessonsNeedsVsWantsRoute,
+}
+
+const LessonsRouteWithChildren =
+  LessonsRoute._addFileChildren(LessonsRouteChildren)
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AboutRoute: AboutRoute,
-  LessonsRoute: LessonsRoute,
+  LessonsRoute: LessonsRouteWithChildren,
   NotebookRoute: NotebookRoute,
   ParentsRoute: ParentsRoute,
 }
