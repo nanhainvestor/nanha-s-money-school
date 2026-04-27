@@ -129,3 +129,148 @@ function ParentsPage() {
     </div>
   );
 }
+
+/* -------------------- Progress Summary -------------------- */
+
+const TRACKED_LESSONS: { id: string; title: string; module: string }[] = [
+  { id: "needs-vs-wants", title: "Needs vs. Wants", module: "Module 1 — Money Basics" },
+];
+
+function ProgressSummary() {
+  const [progressMap, setProgressMap] = useState<Record<string, LessonProgress | undefined>>({});
+
+  useEffect(() => {
+    const load = () => {
+      const next: Record<string, LessonProgress | undefined> = {};
+      for (const l of TRACKED_LESSONS) next[l.id] = getLessonProgress(l.id);
+      setProgressMap(next);
+    };
+    load();
+    const onUpdate = () => load();
+    window.addEventListener("nanha:progress-updated", onUpdate);
+    window.addEventListener("storage", onUpdate);
+    return () => {
+      window.removeEventListener("nanha:progress-updated", onUpdate);
+      window.removeEventListener("storage", onUpdate);
+    };
+  }, []);
+
+  const completedCount = TRACKED_LESSONS.filter((l) => progressMap[l.id]?.completed).length;
+  const totalCorrect = TRACKED_LESSONS.reduce((s, l) => s + (progressMap[l.id]?.quizCorrect ?? 0), 0);
+  const totalQuestions = TRACKED_LESSONS.reduce((s, l) => s + (progressMap[l.id]?.quizTotal ?? 0), 0);
+  const overallPct = TRACKED_LESSONS.length
+    ? Math.round((completedCount / TRACKED_LESSONS.length) * 100)
+    : 0;
+
+  return (
+    <section className="mx-auto max-w-6xl px-4 py-12 sm:px-6">
+      <div className="flex flex-wrap items-end justify-between gap-3">
+        <div>
+          <span className="inline-flex items-center gap-2 rounded-full bg-primary-soft px-4 py-1.5 text-xs font-bold uppercase tracking-wider text-primary">
+            <TrendingUp className="h-3.5 w-3.5" /> Your child's progress
+          </span>
+          <h2 className="mt-3 font-display text-3xl font-extrabold">Progress summary</h2>
+          <p className="mt-1 text-sm text-muted-foreground">
+            Saved on this device. Tracks lessons completed and quiz scores.
+          </p>
+        </div>
+        <div className="text-right">
+          <p className="text-xs font-bold uppercase tracking-wider text-muted-foreground">Overall</p>
+          <p className="font-display text-3xl font-extrabold text-primary">{overallPct}%</p>
+        </div>
+      </div>
+
+      {/* Top stats */}
+      <div className="mt-6 grid gap-4 sm:grid-cols-3">
+        <StatCard
+          icon={<CheckCircle2 className="h-5 w-5" />}
+          label="Lessons completed"
+          value={`${completedCount} / ${TRACKED_LESSONS.length}`}
+        />
+        <StatCard
+          icon={<Trophy className="h-5 w-5" />}
+          label="Quiz score"
+          value={totalQuestions ? `${totalCorrect} / ${totalQuestions}` : "—"}
+        />
+        <StatCard
+          icon={<Clock className="h-5 w-5" />}
+          label="Last activity"
+          value={
+            Object.values(progressMap)
+              .filter(Boolean)
+              .sort((a, b) => (b!.updatedAt > a!.updatedAt ? 1 : -1))[0]
+              ? new Date(
+                  Object.values(progressMap)
+                    .filter(Boolean)
+                    .sort((a, b) => (b!.updatedAt > a!.updatedAt ? 1 : -1))[0]!.updatedAt,
+                ).toLocaleDateString()
+              : "—"
+          }
+        />
+      </div>
+
+      {/* Per-lesson rows */}
+      <div className="mt-6 space-y-3">
+        {TRACKED_LESSONS.map((l) => {
+          const p = progressMap[l.id];
+          const score = p && p.quizTotal ? Math.round((p.quizCorrect / p.quizTotal) * 100) : 0;
+          return (
+            <div
+              key={l.id}
+              className="flex flex-wrap items-center gap-4 rounded-2xl border border-border bg-card p-5 shadow-soft"
+            >
+              <div className="min-w-0 flex-1">
+                <p className="text-xs font-bold uppercase tracking-wider text-muted-foreground">
+                  {l.module}
+                </p>
+                <p className="font-display text-lg font-extrabold">{l.title}</p>
+                <div className="mt-3 flex items-center gap-3">
+                  <Progress value={score} className="h-2 max-w-xs" />
+                  <span className="text-xs font-bold text-muted-foreground">
+                    {p ? `${p.quizCorrect}/${p.quizTotal} correct` : "Not started"}
+                  </span>
+                </div>
+              </div>
+              <div className="flex items-center gap-3">
+                {p?.completed ? (
+                  <span className="inline-flex items-center gap-1.5 rounded-full bg-primary-soft px-3 py-1 text-xs font-bold text-primary">
+                    <CheckCircle2 className="h-3.5 w-3.5" /> Completed
+                  </span>
+                ) : (
+                  <span className="rounded-full bg-muted px-3 py-1 text-xs font-bold text-muted-foreground">
+                    In progress
+                  </span>
+                )}
+                <Button asChild variant="soft" size="sm">
+                  <Link to="/lessons/needs-vs-wants">{p ? "Revisit" : "Start lesson"}</Link>
+                </Button>
+              </div>
+            </div>
+          );
+        })}
+      </div>
+    </section>
+  );
+}
+
+function StatCard({
+  icon,
+  label,
+  value,
+}: {
+  icon: React.ReactNode;
+  label: string;
+  value: string;
+}) {
+  return (
+    <div className="rounded-2xl border border-border bg-card p-5 shadow-soft">
+      <div className="flex items-center gap-2 text-primary">
+        <span className="grid h-8 w-8 place-items-center rounded-xl bg-primary-soft">{icon}</span>
+        <span className="text-xs font-bold uppercase tracking-wider text-muted-foreground">
+          {label}
+        </span>
+      </div>
+      <p className="mt-3 font-display text-2xl font-extrabold">{value}</p>
+    </div>
+  );
+}
