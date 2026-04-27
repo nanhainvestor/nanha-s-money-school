@@ -20,11 +20,11 @@ const tracks = [
     age: "Umar 6–8 saal",
     accent: "bg-primary-soft text-primary",
     lessons: [
-      { title: "Zaruriat aur Khwahishat", desc: "Nanha cycle chahta hai magar uske paas sirf Rs 50 hain. Ab kya kare?", free: true },
-      { title: "Paisay Kahan Se Aate Hain", desc: "Ammi abu kaam kyun karte hain — aur naukri kya hoti hai?", free: true },
-      { title: "Piggy Bank ka Jaadu", desc: "Bachat = mustaqbil ka aap khud aap ka shukriya.", free: false },
-      { title: "Sikkay Ginna", desc: "Aik mazedaar bazar ki sair (Rs aur paisay).", free: false },
-      { title: "Baantna aur Dena", desc: "Meharbani bhi ek qisam ki daulat hai.", free: false },
+      { title: "Needs vs. Wants", desc: "Nanha cycle chahta hai magar uske paas sirf Rs 50 hain. Ab kya kare?", free: true },
+      { title: "Where Money Comes From", desc: "Ammi abu kaam kyun karte hain — aur naukri kya hoti hai?", free: true },
+      { title: "The Magic of the Piggy Bank", desc: "Bachat = mustaqbil ka aap khud aap ka shukriya.", free: false },
+      { title: "Counting Coins", desc: "Aik mazedaar bazar ki sair (Rs aur paisay).", free: false },
+      { title: "Sharing & Giving", desc: "Meharbani bhi ek qisam ki daulat hai.", free: false },
     ],
   },
   {
@@ -32,10 +32,10 @@ const tracks = [
     age: "Umar 9–11 saal",
     accent: "bg-accent-soft text-accent-foreground",
     lessons: [
-      { title: "Paisay ka Maqsad", desc: "Baray khwab + chhote haftawar qadam.", free: true },
-      { title: "Boss ki Tarah Budgeting", desc: "50-30-20 ka usool, lekin bachon ke saiz mein.", free: false },
-      { title: "Bank Kya Hai?", desc: "Aik dosthana imarat jo aap ke paisay ki nigrani karti hai.", free: false },
-      { title: "Pocket Money Ke Ilawa Kamai", desc: "Aise side-hustle khayalat jo lemonade stand nahi hain.", free: false },
+      { title: "The Purpose of Money", desc: "Baray khwab + chhote haftawar qadam.", free: true },
+      { title: "Budgeting Like a Boss", desc: "50-30-20 ka usool, lekin bachon ke saiz mein.", free: false },
+      { title: "What Is a Bank?", desc: "Aik dosthana imarat jo aap ke paisay ki nigrani karti hai.", free: false },
+      { title: "Earning Beyond Pocket Money", desc: "Aise side-hustle khayalat jo lemonade stand nahi hain.", free: false },
     ],
   },
   {
@@ -43,10 +43,10 @@ const tracks = [
     age: "Umar 12–14 saal",
     accent: "bg-foreground text-background",
     lessons: [
-      { title: "Inflation Kya Hai?", desc: "Wahi chocolate aglay saal mehngi kyun hoti hai? (Rs 50 → Rs 70)", free: true },
-      { title: "Stocks Asaani Se Samjho", desc: "Aik bohat bari company ka chhota sa hissa rakhna.", free: false },
+      { title: "What Is Inflation?", desc: "Wahi chocolate aglay saal mehngi kyun hoti hai? (Rs 50 → Rs 70)", free: true },
+      { title: "Stocks Made Simple", desc: "Aik bohat bari company ka chhota sa hissa rakhna.", free: false },
       { title: "Compound Interest", desc: "Duniya ka 8 wan ajooba — sach mein.", free: false },
-      { title: "Online Smart Kharch", desc: "Hype, ads aur 'too good to be true' pehchanna.", free: false },
+      { title: "Smart Online Spending", desc: "Hype, ads aur 'too good to be true' pehchanna.", free: false },
     ],
   },
 ];
@@ -78,7 +78,7 @@ function LessonsPage() {
             </div>
             <div className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
               {track.lessons.map((l, i) => {
-                const isLive = l.title === "Zaruriat aur Khwahishat";
+                const isLive = l.title === "Needs vs. Wants";
                 const Wrapper: React.ElementType = isLive ? Link : "article";
                 const wrapperProps = isLive ? { to: "/lessons/needs-vs-wants" } : {};
                 return (
@@ -92,13 +92,13 @@ function LessonsPage() {
                       {l.free ? (
                         <span className="rounded-full bg-accent px-2.5 py-0.5 text-[10px] font-bold uppercase text-accent-foreground">Muft</span>
                       ) : (
-                        <Lock className="h-4 w-4 text-muted-foreground" />
+                        <span className="rounded-full bg-accent px-2.5 py-0.5 text-[10px] font-bold uppercase text-accent-foreground" hidden>x</span>
                       )}
                     </div>
                     <h3 className="mt-4 text-lg font-bold">{l.title}</h3>
                     <p className="mt-2 flex-1 text-sm text-muted-foreground">{l.desc}</p>
                     <div className="mt-5 flex items-center gap-2 text-sm font-bold text-primary">
-                      {isLive ? "Sabaq shuru karein" : l.free ? "Jald aa raha hai" : "Meri jagah rakhein"} <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
+                      {isLive ? "Start Lesson" : l.free ? "Coming soon" : "Save my spot"} <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
                     </div>
                   </Wrapper>
                 );
