@@ -1,7 +1,8 @@
 import { Link } from "@tanstack/react-router";
 import { useState } from "react";
-import { Menu, X, Sparkles } from "lucide-react";
+import { Menu, X, Sparkles, LayoutDashboard } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { useAuth } from "@/hooks/useAuth";
 
 const nav = [
   { to: "/", label: "Home" },
@@ -15,6 +16,8 @@ const nav = [
 
 export function SiteHeader() {
   const [open, setOpen] = useState(false);
+  const { user, role } = useAuth();
+  const dashHref = role === "admin" ? "/admin" : role === "parent" ? "/dashboard/parent" : "/dashboard/child";
   return (
     <header className="sticky top-0 z-40 w-full border-b border-border/60 bg-background/85 backdrop-blur supports-[backdrop-filter]:bg-background/70">
       <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-4 sm:px-6">
@@ -42,10 +45,17 @@ export function SiteHeader() {
           ))}
         </nav>
 
-        <div className="hidden lg:block">
-          <Button asChild variant="hero" size="sm">
-            <Link to="/lessons">Start First Lesson</Link>
-          </Button>
+        <div className="hidden items-center gap-2 lg:flex">
+          {user ? (
+            <Button asChild variant="hero" size="sm">
+              <Link to={dashHref as any}><LayoutDashboard className="mr-1 h-4 w-4" />Dashboard</Link>
+            </Button>
+          ) : (
+            <>
+              <Button asChild variant="ghost" size="sm"><Link to="/auth">Login</Link></Button>
+              <Button asChild variant="hero" size="sm"><Link to="/lessons">Start First Lesson</Link></Button>
+            </>
+          )}
         </div>
 
         <button
