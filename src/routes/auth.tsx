@@ -1,6 +1,6 @@
 import { createFileRoute, useNavigate, Link } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
-import { useAuth } from "@/hooks/useAuth";
+import { getDashboardPath, useAuth } from "@/hooks/useAuth";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -23,23 +23,22 @@ function AuthPage() {
   useEffect(() => {
     if (loading || roleLoading) return;
     if (user && role) {
-      const dest = role === "admin" ? "/admin" : role === "parent" ? "/dashboard/parent" : "/dashboard/child";
-      navigate({ to: dest });
+      navigate({ to: getDashboardPath(role), replace: true });
     }
   }, [user, role, loading, roleLoading, navigate]);
 
   const onSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setBusy(true);
-    const { error } = mode === "login"
+    const { error, role: nextRole } = mode === "login"
       ? await signIn(email, password)
-      : await signUp(email, password, displayName || email.split("@")[0]);
+      : { ...(await signUp(email, password, displayName || email.split("@")[0])), role: null };
     if (error) {
       setBusy(false);
       toast.error(error);
     } else {
       toast.success(mode === "login" ? "Welcome back!" : "Account banaya gaya!");
-      // keep busy=true; redirect effect will navigate once role loads
+      if (nextRole) navigate({ to: getDashboardPath(nextRole), replace: true });
     }
   };
 
