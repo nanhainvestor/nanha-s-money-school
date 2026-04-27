@@ -19,6 +19,7 @@ import { Route as FaqRouteImport } from './routes/faq'
 import { Route as CookiesRouteImport } from './routes/cookies'
 import { Route as ContactRouteImport } from './routes/contact'
 import { Route as AuthRouteImport } from './routes/auth'
+import { Route as AdminRouteImport } from './routes/admin'
 import { Route as AboutRouteImport } from './routes/about'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as LessonsWhereMoneyComesFromRouteImport } from './routes/lessons.where-money-comes-from'
@@ -34,6 +35,8 @@ import { Route as LessonsEarningBeyondPocketMoneyRouteImport } from './routes/le
 import { Route as LessonsCountingCoinsRouteImport } from './routes/lessons.counting-coins'
 import { Route as LessonsCompoundInterestRouteImport } from './routes/lessons.compound-interest'
 import { Route as LessonsBudgetingLikeABossRouteImport } from './routes/lessons.budgeting-like-a-boss'
+import { Route as DashboardParentRouteImport } from './routes/dashboard.parent'
+import { Route as DashboardChildRouteImport } from './routes/dashboard.child'
 
 const TermsRoute = TermsRouteImport.update({
   id: '/terms',
@@ -83,6 +86,11 @@ const ContactRoute = ContactRouteImport.update({
 const AuthRoute = AuthRouteImport.update({
   id: '/auth',
   path: '/auth',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AdminRoute = AdminRouteImport.update({
+  id: '/admin',
+  path: '/admin',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AboutRoute = AboutRouteImport.update({
@@ -164,10 +172,21 @@ const LessonsBudgetingLikeABossRoute =
     path: '/budgeting-like-a-boss',
     getParentRoute: () => LessonsRoute,
   } as any)
+const DashboardParentRoute = DashboardParentRouteImport.update({
+  id: '/dashboard/parent',
+  path: '/dashboard/parent',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const DashboardChildRoute = DashboardChildRouteImport.update({
+  id: '/dashboard/child',
+  path: '/dashboard/child',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
+  '/admin': typeof AdminRoute
   '/auth': typeof AuthRoute
   '/contact': typeof ContactRoute
   '/cookies': typeof CookiesRoute
@@ -178,6 +197,8 @@ export interface FileRoutesByFullPath {
   '/privacy': typeof PrivacyRoute
   '/safety': typeof SafetyRoute
   '/terms': typeof TermsRoute
+  '/dashboard/child': typeof DashboardChildRoute
+  '/dashboard/parent': typeof DashboardParentRoute
   '/lessons/budgeting-like-a-boss': typeof LessonsBudgetingLikeABossRoute
   '/lessons/compound-interest': typeof LessonsCompoundInterestRoute
   '/lessons/counting-coins': typeof LessonsCountingCoinsRoute
@@ -195,6 +216,7 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
+  '/admin': typeof AdminRoute
   '/auth': typeof AuthRoute
   '/contact': typeof ContactRoute
   '/cookies': typeof CookiesRoute
@@ -205,6 +227,8 @@ export interface FileRoutesByTo {
   '/privacy': typeof PrivacyRoute
   '/safety': typeof SafetyRoute
   '/terms': typeof TermsRoute
+  '/dashboard/child': typeof DashboardChildRoute
+  '/dashboard/parent': typeof DashboardParentRoute
   '/lessons/budgeting-like-a-boss': typeof LessonsBudgetingLikeABossRoute
   '/lessons/compound-interest': typeof LessonsCompoundInterestRoute
   '/lessons/counting-coins': typeof LessonsCountingCoinsRoute
@@ -223,6 +247,7 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
+  '/admin': typeof AdminRoute
   '/auth': typeof AuthRoute
   '/contact': typeof ContactRoute
   '/cookies': typeof CookiesRoute
@@ -233,6 +258,8 @@ export interface FileRoutesById {
   '/privacy': typeof PrivacyRoute
   '/safety': typeof SafetyRoute
   '/terms': typeof TermsRoute
+  '/dashboard/child': typeof DashboardChildRoute
+  '/dashboard/parent': typeof DashboardParentRoute
   '/lessons/budgeting-like-a-boss': typeof LessonsBudgetingLikeABossRoute
   '/lessons/compound-interest': typeof LessonsCompoundInterestRoute
   '/lessons/counting-coins': typeof LessonsCountingCoinsRoute
@@ -252,6 +279,7 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/about'
+    | '/admin'
     | '/auth'
     | '/contact'
     | '/cookies'
@@ -262,6 +290,8 @@ export interface FileRouteTypes {
     | '/privacy'
     | '/safety'
     | '/terms'
+    | '/dashboard/child'
+    | '/dashboard/parent'
     | '/lessons/budgeting-like-a-boss'
     | '/lessons/compound-interest'
     | '/lessons/counting-coins'
@@ -279,6 +309,7 @@ export interface FileRouteTypes {
   to:
     | '/'
     | '/about'
+    | '/admin'
     | '/auth'
     | '/contact'
     | '/cookies'
@@ -289,6 +320,8 @@ export interface FileRouteTypes {
     | '/privacy'
     | '/safety'
     | '/terms'
+    | '/dashboard/child'
+    | '/dashboard/parent'
     | '/lessons/budgeting-like-a-boss'
     | '/lessons/compound-interest'
     | '/lessons/counting-coins'
@@ -306,6 +339,7 @@ export interface FileRouteTypes {
     | '__root__'
     | '/'
     | '/about'
+    | '/admin'
     | '/auth'
     | '/contact'
     | '/cookies'
@@ -316,6 +350,8 @@ export interface FileRouteTypes {
     | '/privacy'
     | '/safety'
     | '/terms'
+    | '/dashboard/child'
+    | '/dashboard/parent'
     | '/lessons/budgeting-like-a-boss'
     | '/lessons/compound-interest'
     | '/lessons/counting-coins'
@@ -334,6 +370,7 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AboutRoute: typeof AboutRoute
+  AdminRoute: typeof AdminRoute
   AuthRoute: typeof AuthRoute
   ContactRoute: typeof ContactRoute
   CookiesRoute: typeof CookiesRoute
@@ -344,6 +381,8 @@ export interface RootRouteChildren {
   PrivacyRoute: typeof PrivacyRoute
   SafetyRoute: typeof SafetyRoute
   TermsRoute: typeof TermsRoute
+  DashboardChildRoute: typeof DashboardChildRoute
+  DashboardParentRoute: typeof DashboardParentRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -416,6 +455,13 @@ declare module '@tanstack/react-router' {
       path: '/auth'
       fullPath: '/auth'
       preLoaderRoute: typeof AuthRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/admin': {
+      id: '/admin'
+      path: '/admin'
+      fullPath: '/admin'
+      preLoaderRoute: typeof AdminRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/about': {
@@ -523,6 +569,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LessonsBudgetingLikeABossRouteImport
       parentRoute: typeof LessonsRoute
     }
+    '/dashboard/parent': {
+      id: '/dashboard/parent'
+      path: '/dashboard/parent'
+      fullPath: '/dashboard/parent'
+      preLoaderRoute: typeof DashboardParentRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/dashboard/child': {
+      id: '/dashboard/child'
+      path: '/dashboard/child'
+      fullPath: '/dashboard/child'
+      preLoaderRoute: typeof DashboardChildRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -564,6 +624,7 @@ const LessonsRouteWithChildren =
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AboutRoute: AboutRoute,
+  AdminRoute: AdminRoute,
   AuthRoute: AuthRoute,
   ContactRoute: ContactRoute,
   CookiesRoute: CookiesRoute,
@@ -574,6 +635,8 @@ const rootRouteChildren: RootRouteChildren = {
   PrivacyRoute: PrivacyRoute,
   SafetyRoute: SafetyRoute,
   TermsRoute: TermsRoute,
+  DashboardChildRoute: DashboardChildRoute,
+  DashboardParentRoute: DashboardParentRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
