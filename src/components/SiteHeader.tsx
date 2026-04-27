@@ -5,12 +5,12 @@ import { Button } from "@/components/ui/button";
 
 const nav = [
   { to: "/", label: "Home" },
-  { to: "/about", label: "Hamara Taaruf" },
-  { to: "/lessons", label: "Sabaq" },
-  { to: "/notebook", label: "Note Book" },
-  { to: "/parents", label: "Walidain Center" },
-  { to: "/faq", label: "Sawal Jawab" },
-  { to: "/contact", label: "Rabta" },
+  { to: "/about", label: "About" },
+  { to: "/lessons", label: "Lessons" },
+  { to: "/notebook", label: "Notebook" },
+  { to: "/parents", label: "Parents" },
+  { to: "/faq", label: "FAQ" },
+  { to: "/contact", label: "Contact" },
 ] as const;
 
 export function SiteHeader() {
@@ -44,13 +44,13 @@ export function SiteHeader() {
 
         <div className="hidden lg:block">
           <Button asChild variant="hero" size="sm">
-            <Link to="/lessons">Pehla Sabaq Shuru Karein</Link>
+            <Link to="/lessons">Start First Lesson</Link>
           </Button>
         </div>
 
         <button
           className="grid h-10 w-10 place-items-center rounded-xl border border-border lg:hidden"
-          aria-label="Menu kholein"
+          aria-label="Open menu"
           onClick={() => setOpen((v) => !v)}
         >
           {open ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
@@ -74,7 +74,7 @@ export function SiteHeader() {
               </Link>
             ))}
             <Button asChild variant="hero" className="mt-2">
-              <Link to="/lessons" onClick={() => setOpen(false)}>Pehla Sabaq Shuru Karein</Link>
+              <Link to="/lessons" onClick={() => setOpen(false)}>Start First Lesson</Link>
             </Button>
           </nav>
         </div>

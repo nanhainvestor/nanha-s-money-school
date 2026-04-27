@@ -23,26 +23,26 @@ export function SiteFooter() {
         </div>
 
         <div>
-          <h4 className="text-sm font-bold text-foreground">Sair Karein</h4>
+          <h4 className="text-sm font-bold text-foreground">Explore</h4>
           <ul className="mt-3 space-y-2 text-sm text-muted-foreground">
-            <li><Link to="/lessons" className="hover:text-primary">Sabaq</Link></li>
-            <li><Link to="/notebook" className="hover:text-primary">Nanha ki Note Book</Link></li>
-            <li><Link to="/parents" className="hover:text-primary">Walidain Center</Link></li>
-            <li><Link to="/about" className="hover:text-primary">Hamara Taaruf</Link></li>
+            <li><Link to="/lessons" className="hover:text-primary">Lessons</Link></li>
+            <li><Link to="/notebook" className="hover:text-primary">Notebook</Link></li>
+            <li><Link to="/parents" className="hover:text-primary">Parents</Link></li>
+            <li><Link to="/about" className="hover:text-primary">About</Link></li>
           </ul>
         </div>
 
         <div>
-          <h4 className="text-sm font-bold text-foreground">Madad</h4>
+          <h4 className="text-sm font-bold text-foreground">Help</h4>
           <ul className="mt-3 space-y-2 text-sm text-muted-foreground">
-            <li><Link to="/faq" className="hover:text-primary">Sawal Jawab</Link></li>
-            <li><Link to="/contact" className="hover:text-primary">Rabta Karein</Link></li>
-            <li><Link to="/safety" className="hover:text-primary">Bachon ki Hifazat</Link></li>
+            <li><Link to="/faq" className="hover:text-primary">FAQ</Link></li>
+            <li><Link to="/contact" className="hover:text-primary">Contact</Link></li>
+            <li><Link to="/safety" className="hover:text-primary">Child Safety</Link></li>
           </ul>
         </div>
 
         <div>
-          <h4 className="text-sm font-bold text-foreground">Qanoon</h4>
+          <h4 className="text-sm font-bold text-foreground">Legal</h4>
           <ul className="mt-3 space-y-2 text-sm text-muted-foreground">
             <li><Link to="/privacy" className="hover:text-primary">Privacy Policy</Link></li>
             <li><Link to="/terms" className="hover:text-primary">Terms of Service</Link></li>
