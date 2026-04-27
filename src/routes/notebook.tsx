@@ -47,7 +47,7 @@ function NotebookPage() {
               <p className="mt-2 flex-1 text-sm text-muted-foreground">{p.excerpt}</p>
               <div className="mt-5 flex items-center justify-between text-sm">
                 <span className="text-muted-foreground">{p.read}</span>
-                <span className="flex items-center gap-1 font-bold text-primary">Parhein <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" /></span>
+                <span className="flex items-center gap-1 font-bold text-primary">Read <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" /></span>
               </div>
             </article>
           ))}

@@ -90,7 +90,7 @@ function FaqPage() {
         <div className="rounded-3xl bg-primary-soft/60 p-6 text-center">
           <p className="font-bold">Aap ka sawal yahan nahi mila?</p>
           <Button asChild variant="hero" size="lg" className="mt-4">
-            <Link to="/contact">Hum se rabta karein</Link>
+            <Link to="/contact">Contact Us</Link>
           </Button>
         </div>
       </section>
