@@ -77,23 +77,32 @@ function LessonsPage() {
               </div>
             </div>
             <div className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-              {track.lessons.map((l, i) => (
-                <article key={l.title} className="group relative flex flex-col rounded-3xl border border-border bg-card p-6 shadow-soft transition-all hover:-translate-y-1 hover:shadow-pop">
-                  <div className="flex items-center justify-between">
-                    <span className="font-display text-3xl font-extrabold text-muted-foreground/40">{String(i + 1).padStart(2, "0")}</span>
-                    {l.free ? (
-                      <span className="rounded-full bg-accent px-2.5 py-0.5 text-[10px] font-bold uppercase text-accent-foreground">Free peek</span>
-                    ) : (
-                      <Lock className="h-4 w-4 text-muted-foreground" />
-                    )}
-                  </div>
-                  <h3 className="mt-4 text-lg font-bold">{l.title}</h3>
-                  <p className="mt-2 flex-1 text-sm text-muted-foreground">{l.desc}</p>
-                  <div className="mt-5 flex items-center gap-2 text-sm font-bold text-primary">
-                    {l.free ? "Start lesson" : "Save my spot"} <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
-                  </div>
-                </article>
-              ))}
+              {track.lessons.map((l, i) => {
+                const isLive = l.title === "Needs vs. Wants";
+                const Wrapper: React.ElementType = isLive ? Link : "article";
+                const wrapperProps = isLive ? { to: "/lessons/needs-vs-wants" } : {};
+                return (
+                  <Wrapper
+                    key={l.title}
+                    {...wrapperProps}
+                    className="group relative flex flex-col rounded-3xl border border-border bg-card p-6 shadow-soft transition-all hover:-translate-y-1 hover:shadow-pop"
+                  >
+                    <div className="flex items-center justify-between">
+                      <span className="font-display text-3xl font-extrabold text-muted-foreground/40">{String(i + 1).padStart(2, "0")}</span>
+                      {l.free ? (
+                        <span className="rounded-full bg-accent px-2.5 py-0.5 text-[10px] font-bold uppercase text-accent-foreground">Free peek</span>
+                      ) : (
+                        <Lock className="h-4 w-4 text-muted-foreground" />
+                      )}
+                    </div>
+                    <h3 className="mt-4 text-lg font-bold">{l.title}</h3>
+                    <p className="mt-2 flex-1 text-sm text-muted-foreground">{l.desc}</p>
+                    <div className="mt-5 flex items-center gap-2 text-sm font-bold text-primary">
+                      {isLive ? "Start lesson" : l.free ? "Coming soon" : "Save my spot"} <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
+                    </div>
+                  </Wrapper>
+                );
+              })}
             </div>
           </div>
         ))}
