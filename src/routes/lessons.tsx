@@ -113,7 +113,7 @@ function LessonsPage() {
           <h2 className="font-display text-3xl font-extrabold">Mukammal curriculum chahiye?</h2>
           <p className="mt-3 text-primary-foreground/90">Sirf Rs 499 / mahina. Walidain syllabus aur weekly tips bhi shamil.</p>
           <Button asChild variant="sun" size="xl" className="mt-6">
-            <Link to="/parents">Walidain Center Kholein</Link>
+            <Link to="/parents">Open Parents Center</Link>
           </Button>
         </div>
       </section>
