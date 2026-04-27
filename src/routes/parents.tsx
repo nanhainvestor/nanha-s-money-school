@@ -2,8 +2,14 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
-import { Download, ShieldCheck, CheckCircle2, Sparkles, TrendingUp, Trophy, Clock } from "lucide-react";
-import { getLessonProgress, type LessonProgress } from "@/lib/progress";
+import { Download, ShieldCheck, CheckCircle2, Sparkles, TrendingUp, Trophy, Clock, Flame, Bell, Heart } from "lucide-react";
+import {
+  getLessonProgress,
+  getCurrentStreak,
+  getWeekActivity,
+  getDaysSinceLastActivity,
+  type LessonProgress,
+} from "@/lib/progress";
 
 export const Route = createFileRoute("/parents")({
   head: () => ({
@@ -41,6 +47,8 @@ function ParentsPage() {
       </section>
 
       <ProgressSummary />
+      <WeeklyStreak />
+
 
       {/* Roadmap */}
       <section className="mx-auto max-w-6xl px-4 py-16 sm:px-6">
@@ -272,5 +280,139 @@ function StatCard({
       </div>
       <p className="mt-3 font-display text-2xl font-extrabold">{value}</p>
     </div>
+  );
+}
+
+/* -------------------- Weekly Streak + Reminder -------------------- */
+
+const DAY_LABELS = ["S", "M", "T", "W", "T", "F", "S"];
+
+function WeeklyStreak() {
+  const [streak, setStreak] = useState(0);
+  const [week, setWeek] = useState<{ date: Date; key: string; active: boolean }[]>([]);
+  const [daysSince, setDaysSince] = useState<number | null>(null);
+
+  useEffect(() => {
+    const load = () => {
+      setStreak(getCurrentStreak());
+      setWeek(getWeekActivity());
+      setDaysSince(getDaysSinceLastActivity());
+    };
+    load();
+    const onUpdate = () => load();
+    window.addEventListener("nanha:progress-updated", onUpdate);
+    window.addEventListener("storage", onUpdate);
+    return () => {
+      window.removeEventListener("nanha:progress-updated", onUpdate);
+      window.removeEventListener("storage", onUpdate);
+    };
+  }, []);
+
+  const activeThisWeek = week.filter((d) => d.active).length;
+  const todayKey = week[week.length - 1]?.key;
+
+  // Reminder copy based on recency.
+  let reminder: { tone: "celebrate" | "nudge" | "welcome"; title: string; body: string } = {
+    tone: "welcome",
+    title: "Start your first lesson together",
+    body: "Sit beside your child for 5 minutes today. Tiny habits beat long lectures.",
+  };
+  if (daysSince === 0) {
+    reminder = {
+      tone: "celebrate",
+      title: streak > 1 ? `${streak}-day streak — beautifully done!` : "Lesson done today 🎉",
+      body: "Ask: 'What's one money idea you learned today?' Listening is the lesson.",
+    };
+  } else if (daysSince === 1) {
+    reminder = {
+      tone: "nudge",
+      title: "Keep the streak alive 🔥",
+      body: "It's been a day. A 3-minute lesson tonight keeps the habit warm.",
+    };
+  } else if (daysSince !== null && daysSince > 1) {
+    reminder = {
+      tone: "nudge",
+      title: `It's been ${daysSince} days — gently restart?`,
+      body: "No pressure. Pick one short lesson together — momentum returns fast.",
+    };
+  }
+
+  const toneStyles = {
+    celebrate: "bg-accent-soft text-accent-foreground",
+    nudge: "bg-primary-soft text-primary",
+    welcome: "bg-muted text-foreground",
+  } as const;
+
+  return (
+    <section className="mx-auto max-w-6xl px-4 pb-4 sm:px-6">
+      <div className="grid gap-5 md:grid-cols-3">
+        {/* Streak card */}
+        <div className="rounded-3xl border border-border bg-card p-6 shadow-soft md:col-span-2">
+          <div className="flex flex-wrap items-center justify-between gap-3">
+            <div className="flex items-center gap-3">
+              <span className="grid h-10 w-10 place-items-center rounded-xl bg-accent-soft text-accent-foreground">
+                <Flame className="h-5 w-5" />
+              </span>
+              <div>
+                <p className="text-xs font-bold uppercase tracking-wider text-muted-foreground">
+                  Weekly streak
+                </p>
+                <p className="font-display text-2xl font-extrabold">
+                  {streak} {streak === 1 ? "day" : "days"} in a row
+                </p>
+              </div>
+            </div>
+            <p className="text-sm text-muted-foreground">
+              <span className="font-bold text-foreground">{activeThisWeek}</span> / 7 days active this week
+            </p>
+          </div>
+
+          <div className="mt-5 grid grid-cols-7 gap-2">
+            {week.map((d, i) => {
+              const isToday = d.key === todayKey;
+              return (
+                <div key={d.key} className="flex flex-col items-center gap-1.5">
+                  <span className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground">
+                    {DAY_LABELS[d.date.getDay()]}
+                  </span>
+                  <div
+                    className={[
+                      "grid h-10 w-full place-items-center rounded-xl text-xs font-bold transition-all",
+                      d.active
+                        ? "bg-gradient-primary text-primary-foreground shadow-soft"
+                        : "bg-muted text-muted-foreground",
+                      isToday && !d.active ? "ring-2 ring-primary/40" : "",
+                      isToday ? "scale-105" : "",
+                    ].join(" ")}
+                    aria-label={`${d.key} ${d.active ? "active" : "inactive"}`}
+                  >
+                    {d.active ? <Flame className="h-4 w-4" /> : d.date.getDate()}
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+
+        {/* Reminder card */}
+        <div className={`rounded-3xl border border-border p-6 shadow-soft ${toneStyles[reminder.tone]}`}>
+          <div className="flex items-center gap-2">
+            <span className="grid h-9 w-9 place-items-center rounded-xl bg-background/60">
+              {reminder.tone === "celebrate" ? (
+                <Heart className="h-4.5 w-4.5" />
+              ) : (
+                <Bell className="h-4.5 w-4.5" />
+              )}
+            </span>
+            <p className="text-xs font-bold uppercase tracking-wider opacity-80">Gentle reminder</p>
+          </div>
+          <h3 className="mt-4 font-display text-xl font-extrabold leading-tight">{reminder.title}</h3>
+          <p className="mt-2 text-sm opacity-90">{reminder.body}</p>
+          <Button asChild variant="soft" size="sm" className="mt-5">
+            <Link to="/lessons">{daysSince === 0 ? "Pick tomorrow's lesson" : "Open the Learning Lab"}</Link>
+          </Button>
+        </div>
+      </div>
+    </section>
   );
 }
