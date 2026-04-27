@@ -5,10 +5,12 @@ import { Button } from "@/components/ui/button";
 
 const nav = [
   { to: "/", label: "Home" },
-  { to: "/about", label: "About" },
-  { to: "/lessons", label: "Learning Lab" },
-  { to: "/notebook", label: "Notebook" },
-  { to: "/parents", label: "Parent Center" },
+  { to: "/about", label: "Hamara Taaruf" },
+  { to: "/lessons", label: "Sabaq" },
+  { to: "/notebook", label: "Note Book" },
+  { to: "/parents", label: "Walidain Center" },
+  { to: "/faq", label: "Sawal Jawab" },
+  { to: "/contact", label: "Rabta" },
 ] as const;
 
 export function SiteHeader() {
@@ -25,7 +27,7 @@ export function SiteHeader() {
           </span>
         </Link>
 
-        <nav className="hidden items-center gap-1 md:flex">
+        <nav className="hidden items-center gap-1 lg:flex">
           {nav.map((item) => (
             <Link
               key={item.to}
@@ -33,22 +35,22 @@ export function SiteHeader() {
               activeOptions={{ exact: item.to === "/" }}
               activeProps={{ className: "text-primary bg-primary-soft" }}
               inactiveProps={{ className: "text-foreground/70 hover:text-foreground hover:bg-muted" }}
-              className="rounded-full px-4 py-2 text-sm font-semibold transition-colors"
+              className="rounded-full px-3 py-2 text-sm font-semibold transition-colors"
             >
               {item.label}
             </Link>
           ))}
         </nav>
 
-        <div className="hidden md:block">
+        <div className="hidden lg:block">
           <Button asChild variant="hero" size="sm">
-            <Link to="/lessons">Start First Lesson</Link>
+            <Link to="/lessons">Pehla Sabaq Shuru Karein</Link>
           </Button>
         </div>
 
         <button
-          className="grid h-10 w-10 place-items-center rounded-xl border border-border md:hidden"
-          aria-label="Toggle menu"
+          className="grid h-10 w-10 place-items-center rounded-xl border border-border lg:hidden"
+          aria-label="Menu kholein"
           onClick={() => setOpen((v) => !v)}
         >
           {open ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
@@ -56,7 +58,7 @@ export function SiteHeader() {
       </div>
 
       {open && (
-        <div className="border-t border-border bg-background md:hidden">
+        <div className="border-t border-border bg-background lg:hidden">
           <nav className="mx-auto flex max-w-6xl flex-col gap-1 px-4 py-3">
             {nav.map((item) => (
               <Link
@@ -72,7 +74,7 @@ export function SiteHeader() {
               </Link>
             ))}
             <Button asChild variant="hero" className="mt-2">
-              <Link to="/lessons" onClick={() => setOpen(false)}>Start First Lesson</Link>
+              <Link to="/lessons" onClick={() => setOpen(false)}>Pehla Sabaq Shuru Karein</Link>
             </Button>
           </nav>
         </div>
