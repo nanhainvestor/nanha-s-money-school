@@ -55,9 +55,9 @@ function ParentsPage() {
         <h2 className="font-display text-3xl font-extrabold">Curriculum ka naqsha</h2>
         <div className="mt-8 grid gap-6 md:grid-cols-3">
           {[
-            { t: "Module 1 — Paisay ki Bunyaad", items: ["Zaruriat aur Khwahishat", "Paisay kahan se aate hain", "Sikkay aur note"] },
-            { t: "Module 2 — Bachat aur Maqsad", items: ["Maqsad banana", "Budgeting ki bunyaad", "Sabar ka phal"] },
-            { t: "Module 3 — Paisay ko Barhana", items: ["Bank ki samajh", "Inflation", "Sarmaya kari ka taaruf"] },
+            { t: "Module 1 — Money Basics", items: ["Needs vs. Wants", "Where Money Comes From", "Coins & Notes"] },
+            { t: "Module 2 — Saving & Goals", items: ["Setting Goals", "Budgeting Basics", "The Reward of Patience"] },
+            { t: "Module 3 — Growing Money", items: ["Understanding Banks", "Inflation", "Intro to Investing"] },
           ].map((m) => (
             <div key={m.t} className="rounded-3xl border border-border bg-card p-7 shadow-soft">
               <h3 className="font-bold">{m.t}</h3>
@@ -130,7 +130,7 @@ function ParentsPage() {
               placeholder="walid@email.com"
               className="h-12 flex-1 rounded-full border-0 bg-background px-5 text-foreground outline-none ring-2 ring-transparent focus:ring-accent"
             />
-            <Button type="submit" variant="sun" size="lg">Syllabus Download Karein</Button>
+            <Button type="submit" variant="sun" size="lg">Download Syllabus</Button>
           </form>
         </div>
       </section>
@@ -141,7 +141,7 @@ function ParentsPage() {
 /* -------------------- Progress Summary -------------------- */
 
 const TRACKED_LESSONS: { id: string; title: string; module: string }[] = [
-  { id: "needs-vs-wants", title: "Zaruriat aur Khwahishat", module: "Module 1 — Paisay ki Bunyaad" },
+  { id: "needs-vs-wants", title: "Needs vs. Wants", module: "Module 1 — Money Basics" },
 ];
 
 function ProgressSummary() {
@@ -250,7 +250,7 @@ function ProgressSummary() {
                   </span>
                 )}
                 <Button asChild variant="soft" size="sm">
-                  <Link to="/lessons/needs-vs-wants">{p ? "Dobara dekhein" : "Sabaq shuru karein"}</Link>
+                  <Link to="/lessons/needs-vs-wants">{p ? "Review Again" : "Start Lesson"}</Link>
                 </Button>
               </div>
             </div>

@@ -38,10 +38,10 @@ function HomePage() {
             </p>
             <div className="mt-8 flex flex-wrap gap-3">
               <Button asChild variant="hero" size="xl">
-                <Link to="/lessons">Pehla Sabaq Shuru Karein <ArrowRight className="h-4 w-4" /></Link>
+                <Link to="/lessons">Start First Lesson <ArrowRight className="h-4 w-4" /></Link>
               </Button>
               <Button asChild variant="soft" size="xl">
-                <Link to="/parents">Walidain ke Liye</Link>
+                <Link to="/parents">For Parents</Link>
               </Button>
             </div>
             <div className="mt-8 flex items-center gap-4 text-sm text-muted-foreground">
@@ -114,9 +114,9 @@ function HomePage() {
             <p className="mt-4 text-muted-foreground">Teen levels, bees kahaniyan. Ustaadon ne banayi, fankaaron ne sajayi.</p>
             <div className="mt-6 space-y-3">
               {[
-                { tag: "Beginner", color: "bg-primary-soft text-primary", title: "Zaruriat aur Khwahishat", note: "Umar 6–8 · 5 sabaq" },
-                { tag: "Intermediate", color: "bg-accent-soft text-accent-foreground", title: "Bachat aur Maqsad", note: "Umar 9–11 · 8 sabaq" },
-                { tag: "Advanced", color: "bg-foreground text-background", title: "Sarmaya Kari ki Bunyaad", note: "Umar 12–14 · 7 sabaq" },
+                { tag: "Beginner", color: "bg-primary-soft text-primary", title: "Needs vs. Wants", note: "Umar 6–8 · 5 sabaq" },
+                { tag: "Intermediate", color: "bg-accent-soft text-accent-foreground", title: "Saving & Goals", note: "Umar 9–11 · 8 sabaq" },
+                { tag: "Advanced", color: "bg-foreground text-background", title: "Investing Basics", note: "Umar 12–14 · 7 sabaq" },
               ].map((l) => (
                 <div key={l.title} className="flex items-center justify-between rounded-2xl border border-border bg-card px-5 py-4 shadow-soft">
                   <div className="flex items-center gap-4">
@@ -131,7 +131,7 @@ function HomePage() {
               ))}
             </div>
             <Button asChild variant="hero" size="lg" className="mt-8">
-              <Link to="/lessons">Lab Dekhein</Link>
+              <Link to="/lessons">View Lab</Link>
             </Button>
           </div>
         </div>
@@ -145,12 +145,12 @@ function HomePage() {
         </div>
         <div className="mt-10 grid gap-5 md:grid-cols-3">
           {[
-            { plan: "Free", price: "Rs 0", period: "hamesha", features: ["5 muft sabaq", "Walidain center", "Streak tracker"], cta: "Shuru Karein", to: "/lessons" as const, variant: "soft" as const },
-            { plan: "Mahana", price: "Rs 499", period: "/ mahina", features: ["Sare 20+ sabaq", "Quiz aur certificate", "Walidain ke weekly tips"], cta: "Plan Lein", to: "/parents" as const, variant: "hero" as const, highlight: true },
-            { plan: "Salana", price: "Rs 4,499", period: "/ saal", features: ["Mahana plan ke sare features", "2 mahine muft", "Printable starter kit"], cta: "Bachat ke Sath Lein", to: "/parents" as const, variant: "sun" as const },
+            { plan: "Free", price: "Rs 0", period: "hamesha", features: ["5 muft sabaq", "Walidain center", "Streak tracker"], cta: "Get Started", to: "/lessons" as const, variant: "soft" as const },
+            { plan: "Monthly", price: "Rs 499", period: "/ mahina", features: ["Sare 20+ sabaq", "Quiz aur certificate", "Walidain ke weekly tips"], cta: "Choose Plan", to: "/parents" as const, variant: "hero" as const, highlight: true },
+            { plan: "Yearly", price: "Rs 4,499", period: "/ saal", features: ["Mahana plan ke sare features", "2 mahine muft", "Printable starter kit"], cta: "Save & Subscribe", to: "/parents" as const, variant: "sun" as const },
           ].map((p) => (
             <div key={p.plan} className={`rounded-3xl border bg-card p-7 shadow-soft ${p.highlight ? "border-primary shadow-pop ring-2 ring-primary/20" : "border-border"}`}>
-              {p.highlight && <span className="rounded-full bg-primary px-3 py-1 text-xs font-bold text-primary-foreground">Sab se Mashhoor</span>}
+              {p.highlight && <span className="rounded-full bg-primary px-3 py-1 text-xs font-bold text-primary-foreground">Most Popular</span>}
               <h3 className="mt-3 font-display text-xl font-extrabold">{p.plan}</h3>
               <p className="mt-2"><span className="font-display text-4xl font-extrabold text-primary">{p.price}</span> <span className="text-sm text-muted-foreground">{p.period}</span></p>
               <ul className="mt-5 space-y-2 text-sm text-muted-foreground">
@@ -201,7 +201,7 @@ function HomePage() {
                 placeholder="walid@email.com"
                 className="h-12 flex-1 rounded-full border-0 bg-background px-5 text-foreground outline-none ring-2 ring-transparent focus:ring-accent"
               />
-              <Button type="submit" variant="sun" size="lg">Muft Kit Bhejein</Button>
+              <Button type="submit" variant="sun" size="lg">Send Free Kit</Button>
             </form>
             <p className="mt-3 text-xs text-primary-foreground/80">Koi spam nahi. Ek click se unsubscribe.</p>
           </div>

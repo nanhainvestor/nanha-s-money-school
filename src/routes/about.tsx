@@ -75,7 +75,7 @@ function AboutPage() {
             ))}
           </div>
           <Button asChild variant="hero" size="xl" className="mt-10">
-            <Link to="/lessons">Andar jhank kar dekhein</Link>
+            <Link to="/lessons">Take a Peek Inside</Link>
           </Button>
         </div>
       </section>

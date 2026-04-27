@@ -54,7 +54,7 @@ function ContactPage() {
               <h2 className="mt-4 font-display text-2xl font-extrabold">Shukriya!</h2>
               <p className="mt-2 text-muted-foreground">Aap ka paigham mil gaya. Hum jaldi jawab denge.</p>
               <Button asChild variant="soft" className="mt-6">
-                <Link to="/">Wapas home</Link>
+                <Link to="/">Back to Home</Link>
               </Button>
             </div>
           ) : (
@@ -79,7 +79,7 @@ function ContactPage() {
                   <textarea required rows={5} className="w-full rounded-xl border border-border bg-background p-4 outline-none focus:ring-2 focus:ring-primary" placeholder="Yahan likhein..." />
                 </Field>
                 <Button type="submit" variant="hero" size="lg">
-                  Paigham Bhejein <Send className="h-4 w-4" />
+                  Send Message <Send className="h-4 w-4" />
                 </Button>
               </div>
             </>
