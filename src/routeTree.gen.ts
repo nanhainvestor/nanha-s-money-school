@@ -20,7 +20,19 @@ import { Route as CookiesRouteImport } from './routes/cookies'
 import { Route as ContactRouteImport } from './routes/contact'
 import { Route as AboutRouteImport } from './routes/about'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as LessonsWhereMoneyComesFromRouteImport } from './routes/lessons.where-money-comes-from'
+import { Route as LessonsWhatIsInflationRouteImport } from './routes/lessons.what-is-inflation'
+import { Route as LessonsWhatIsABankRouteImport } from './routes/lessons.what-is-a-bank'
+import { Route as LessonsStocksMadeSimpleRouteImport } from './routes/lessons.stocks-made-simple'
+import { Route as LessonsSmartOnlineSpendingRouteImport } from './routes/lessons.smart-online-spending'
+import { Route as LessonsSharingGivingRouteImport } from './routes/lessons.sharing-giving'
+import { Route as LessonsPurposeOfMoneyRouteImport } from './routes/lessons.purpose-of-money'
+import { Route as LessonsPiggyBankMagicRouteImport } from './routes/lessons.piggy-bank-magic'
 import { Route as LessonsNeedsVsWantsRouteImport } from './routes/lessons.needs-vs-wants'
+import { Route as LessonsEarningBeyondPocketMoneyRouteImport } from './routes/lessons.earning-beyond-pocket-money'
+import { Route as LessonsCountingCoinsRouteImport } from './routes/lessons.counting-coins'
+import { Route as LessonsCompoundInterestRouteImport } from './routes/lessons.compound-interest'
+import { Route as LessonsBudgetingLikeABossRouteImport } from './routes/lessons.budgeting-like-a-boss'
 
 const TermsRoute = TermsRouteImport.update({
   id: '/terms',
@@ -77,11 +89,75 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const LessonsWhereMoneyComesFromRoute =
+  LessonsWhereMoneyComesFromRouteImport.update({
+    id: '/where-money-comes-from',
+    path: '/where-money-comes-from',
+    getParentRoute: () => LessonsRoute,
+  } as any)
+const LessonsWhatIsInflationRoute = LessonsWhatIsInflationRouteImport.update({
+  id: '/what-is-inflation',
+  path: '/what-is-inflation',
+  getParentRoute: () => LessonsRoute,
+} as any)
+const LessonsWhatIsABankRoute = LessonsWhatIsABankRouteImport.update({
+  id: '/what-is-a-bank',
+  path: '/what-is-a-bank',
+  getParentRoute: () => LessonsRoute,
+} as any)
+const LessonsStocksMadeSimpleRoute = LessonsStocksMadeSimpleRouteImport.update({
+  id: '/stocks-made-simple',
+  path: '/stocks-made-simple',
+  getParentRoute: () => LessonsRoute,
+} as any)
+const LessonsSmartOnlineSpendingRoute =
+  LessonsSmartOnlineSpendingRouteImport.update({
+    id: '/smart-online-spending',
+    path: '/smart-online-spending',
+    getParentRoute: () => LessonsRoute,
+  } as any)
+const LessonsSharingGivingRoute = LessonsSharingGivingRouteImport.update({
+  id: '/sharing-giving',
+  path: '/sharing-giving',
+  getParentRoute: () => LessonsRoute,
+} as any)
+const LessonsPurposeOfMoneyRoute = LessonsPurposeOfMoneyRouteImport.update({
+  id: '/purpose-of-money',
+  path: '/purpose-of-money',
+  getParentRoute: () => LessonsRoute,
+} as any)
+const LessonsPiggyBankMagicRoute = LessonsPiggyBankMagicRouteImport.update({
+  id: '/piggy-bank-magic',
+  path: '/piggy-bank-magic',
+  getParentRoute: () => LessonsRoute,
+} as any)
 const LessonsNeedsVsWantsRoute = LessonsNeedsVsWantsRouteImport.update({
   id: '/needs-vs-wants',
   path: '/needs-vs-wants',
   getParentRoute: () => LessonsRoute,
 } as any)
+const LessonsEarningBeyondPocketMoneyRoute =
+  LessonsEarningBeyondPocketMoneyRouteImport.update({
+    id: '/earning-beyond-pocket-money',
+    path: '/earning-beyond-pocket-money',
+    getParentRoute: () => LessonsRoute,
+  } as any)
+const LessonsCountingCoinsRoute = LessonsCountingCoinsRouteImport.update({
+  id: '/counting-coins',
+  path: '/counting-coins',
+  getParentRoute: () => LessonsRoute,
+} as any)
+const LessonsCompoundInterestRoute = LessonsCompoundInterestRouteImport.update({
+  id: '/compound-interest',
+  path: '/compound-interest',
+  getParentRoute: () => LessonsRoute,
+} as any)
+const LessonsBudgetingLikeABossRoute =
+  LessonsBudgetingLikeABossRouteImport.update({
+    id: '/budgeting-like-a-boss',
+    path: '/budgeting-like-a-boss',
+    getParentRoute: () => LessonsRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -95,7 +171,19 @@ export interface FileRoutesByFullPath {
   '/privacy': typeof PrivacyRoute
   '/safety': typeof SafetyRoute
   '/terms': typeof TermsRoute
+  '/lessons/budgeting-like-a-boss': typeof LessonsBudgetingLikeABossRoute
+  '/lessons/compound-interest': typeof LessonsCompoundInterestRoute
+  '/lessons/counting-coins': typeof LessonsCountingCoinsRoute
+  '/lessons/earning-beyond-pocket-money': typeof LessonsEarningBeyondPocketMoneyRoute
   '/lessons/needs-vs-wants': typeof LessonsNeedsVsWantsRoute
+  '/lessons/piggy-bank-magic': typeof LessonsPiggyBankMagicRoute
+  '/lessons/purpose-of-money': typeof LessonsPurposeOfMoneyRoute
+  '/lessons/sharing-giving': typeof LessonsSharingGivingRoute
+  '/lessons/smart-online-spending': typeof LessonsSmartOnlineSpendingRoute
+  '/lessons/stocks-made-simple': typeof LessonsStocksMadeSimpleRoute
+  '/lessons/what-is-a-bank': typeof LessonsWhatIsABankRoute
+  '/lessons/what-is-inflation': typeof LessonsWhatIsInflationRoute
+  '/lessons/where-money-comes-from': typeof LessonsWhereMoneyComesFromRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -109,7 +197,19 @@ export interface FileRoutesByTo {
   '/privacy': typeof PrivacyRoute
   '/safety': typeof SafetyRoute
   '/terms': typeof TermsRoute
+  '/lessons/budgeting-like-a-boss': typeof LessonsBudgetingLikeABossRoute
+  '/lessons/compound-interest': typeof LessonsCompoundInterestRoute
+  '/lessons/counting-coins': typeof LessonsCountingCoinsRoute
+  '/lessons/earning-beyond-pocket-money': typeof LessonsEarningBeyondPocketMoneyRoute
   '/lessons/needs-vs-wants': typeof LessonsNeedsVsWantsRoute
+  '/lessons/piggy-bank-magic': typeof LessonsPiggyBankMagicRoute
+  '/lessons/purpose-of-money': typeof LessonsPurposeOfMoneyRoute
+  '/lessons/sharing-giving': typeof LessonsSharingGivingRoute
+  '/lessons/smart-online-spending': typeof LessonsSmartOnlineSpendingRoute
+  '/lessons/stocks-made-simple': typeof LessonsStocksMadeSimpleRoute
+  '/lessons/what-is-a-bank': typeof LessonsWhatIsABankRoute
+  '/lessons/what-is-inflation': typeof LessonsWhatIsInflationRoute
+  '/lessons/where-money-comes-from': typeof LessonsWhereMoneyComesFromRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -124,7 +224,19 @@ export interface FileRoutesById {
   '/privacy': typeof PrivacyRoute
   '/safety': typeof SafetyRoute
   '/terms': typeof TermsRoute
+  '/lessons/budgeting-like-a-boss': typeof LessonsBudgetingLikeABossRoute
+  '/lessons/compound-interest': typeof LessonsCompoundInterestRoute
+  '/lessons/counting-coins': typeof LessonsCountingCoinsRoute
+  '/lessons/earning-beyond-pocket-money': typeof LessonsEarningBeyondPocketMoneyRoute
   '/lessons/needs-vs-wants': typeof LessonsNeedsVsWantsRoute
+  '/lessons/piggy-bank-magic': typeof LessonsPiggyBankMagicRoute
+  '/lessons/purpose-of-money': typeof LessonsPurposeOfMoneyRoute
+  '/lessons/sharing-giving': typeof LessonsSharingGivingRoute
+  '/lessons/smart-online-spending': typeof LessonsSmartOnlineSpendingRoute
+  '/lessons/stocks-made-simple': typeof LessonsStocksMadeSimpleRoute
+  '/lessons/what-is-a-bank': typeof LessonsWhatIsABankRoute
+  '/lessons/what-is-inflation': typeof LessonsWhatIsInflationRoute
+  '/lessons/where-money-comes-from': typeof LessonsWhereMoneyComesFromRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -140,7 +252,19 @@ export interface FileRouteTypes {
     | '/privacy'
     | '/safety'
     | '/terms'
+    | '/lessons/budgeting-like-a-boss'
+    | '/lessons/compound-interest'
+    | '/lessons/counting-coins'
+    | '/lessons/earning-beyond-pocket-money'
     | '/lessons/needs-vs-wants'
+    | '/lessons/piggy-bank-magic'
+    | '/lessons/purpose-of-money'
+    | '/lessons/sharing-giving'
+    | '/lessons/smart-online-spending'
+    | '/lessons/stocks-made-simple'
+    | '/lessons/what-is-a-bank'
+    | '/lessons/what-is-inflation'
+    | '/lessons/where-money-comes-from'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -154,7 +278,19 @@ export interface FileRouteTypes {
     | '/privacy'
     | '/safety'
     | '/terms'
+    | '/lessons/budgeting-like-a-boss'
+    | '/lessons/compound-interest'
+    | '/lessons/counting-coins'
+    | '/lessons/earning-beyond-pocket-money'
     | '/lessons/needs-vs-wants'
+    | '/lessons/piggy-bank-magic'
+    | '/lessons/purpose-of-money'
+    | '/lessons/sharing-giving'
+    | '/lessons/smart-online-spending'
+    | '/lessons/stocks-made-simple'
+    | '/lessons/what-is-a-bank'
+    | '/lessons/what-is-inflation'
+    | '/lessons/where-money-comes-from'
   id:
     | '__root__'
     | '/'
@@ -168,7 +304,19 @@ export interface FileRouteTypes {
     | '/privacy'
     | '/safety'
     | '/terms'
+    | '/lessons/budgeting-like-a-boss'
+    | '/lessons/compound-interest'
+    | '/lessons/counting-coins'
+    | '/lessons/earning-beyond-pocket-money'
     | '/lessons/needs-vs-wants'
+    | '/lessons/piggy-bank-magic'
+    | '/lessons/purpose-of-money'
+    | '/lessons/sharing-giving'
+    | '/lessons/smart-online-spending'
+    | '/lessons/stocks-made-simple'
+    | '/lessons/what-is-a-bank'
+    | '/lessons/what-is-inflation'
+    | '/lessons/where-money-comes-from'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -264,6 +412,62 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/lessons/where-money-comes-from': {
+      id: '/lessons/where-money-comes-from'
+      path: '/where-money-comes-from'
+      fullPath: '/lessons/where-money-comes-from'
+      preLoaderRoute: typeof LessonsWhereMoneyComesFromRouteImport
+      parentRoute: typeof LessonsRoute
+    }
+    '/lessons/what-is-inflation': {
+      id: '/lessons/what-is-inflation'
+      path: '/what-is-inflation'
+      fullPath: '/lessons/what-is-inflation'
+      preLoaderRoute: typeof LessonsWhatIsInflationRouteImport
+      parentRoute: typeof LessonsRoute
+    }
+    '/lessons/what-is-a-bank': {
+      id: '/lessons/what-is-a-bank'
+      path: '/what-is-a-bank'
+      fullPath: '/lessons/what-is-a-bank'
+      preLoaderRoute: typeof LessonsWhatIsABankRouteImport
+      parentRoute: typeof LessonsRoute
+    }
+    '/lessons/stocks-made-simple': {
+      id: '/lessons/stocks-made-simple'
+      path: '/stocks-made-simple'
+      fullPath: '/lessons/stocks-made-simple'
+      preLoaderRoute: typeof LessonsStocksMadeSimpleRouteImport
+      parentRoute: typeof LessonsRoute
+    }
+    '/lessons/smart-online-spending': {
+      id: '/lessons/smart-online-spending'
+      path: '/smart-online-spending'
+      fullPath: '/lessons/smart-online-spending'
+      preLoaderRoute: typeof LessonsSmartOnlineSpendingRouteImport
+      parentRoute: typeof LessonsRoute
+    }
+    '/lessons/sharing-giving': {
+      id: '/lessons/sharing-giving'
+      path: '/sharing-giving'
+      fullPath: '/lessons/sharing-giving'
+      preLoaderRoute: typeof LessonsSharingGivingRouteImport
+      parentRoute: typeof LessonsRoute
+    }
+    '/lessons/purpose-of-money': {
+      id: '/lessons/purpose-of-money'
+      path: '/purpose-of-money'
+      fullPath: '/lessons/purpose-of-money'
+      preLoaderRoute: typeof LessonsPurposeOfMoneyRouteImport
+      parentRoute: typeof LessonsRoute
+    }
+    '/lessons/piggy-bank-magic': {
+      id: '/lessons/piggy-bank-magic'
+      path: '/piggy-bank-magic'
+      fullPath: '/lessons/piggy-bank-magic'
+      preLoaderRoute: typeof LessonsPiggyBankMagicRouteImport
+      parentRoute: typeof LessonsRoute
+    }
     '/lessons/needs-vs-wants': {
       id: '/lessons/needs-vs-wants'
       path: '/needs-vs-wants'
@@ -271,15 +475,67 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LessonsNeedsVsWantsRouteImport
       parentRoute: typeof LessonsRoute
     }
+    '/lessons/earning-beyond-pocket-money': {
+      id: '/lessons/earning-beyond-pocket-money'
+      path: '/earning-beyond-pocket-money'
+      fullPath: '/lessons/earning-beyond-pocket-money'
+      preLoaderRoute: typeof LessonsEarningBeyondPocketMoneyRouteImport
+      parentRoute: typeof LessonsRoute
+    }
+    '/lessons/counting-coins': {
+      id: '/lessons/counting-coins'
+      path: '/counting-coins'
+      fullPath: '/lessons/counting-coins'
+      preLoaderRoute: typeof LessonsCountingCoinsRouteImport
+      parentRoute: typeof LessonsRoute
+    }
+    '/lessons/compound-interest': {
+      id: '/lessons/compound-interest'
+      path: '/compound-interest'
+      fullPath: '/lessons/compound-interest'
+      preLoaderRoute: typeof LessonsCompoundInterestRouteImport
+      parentRoute: typeof LessonsRoute
+    }
+    '/lessons/budgeting-like-a-boss': {
+      id: '/lessons/budgeting-like-a-boss'
+      path: '/budgeting-like-a-boss'
+      fullPath: '/lessons/budgeting-like-a-boss'
+      preLoaderRoute: typeof LessonsBudgetingLikeABossRouteImport
+      parentRoute: typeof LessonsRoute
+    }
   }
 }
 
 interface LessonsRouteChildren {
+  LessonsBudgetingLikeABossRoute: typeof LessonsBudgetingLikeABossRoute
+  LessonsCompoundInterestRoute: typeof LessonsCompoundInterestRoute
+  LessonsCountingCoinsRoute: typeof LessonsCountingCoinsRoute
+  LessonsEarningBeyondPocketMoneyRoute: typeof LessonsEarningBeyondPocketMoneyRoute
   LessonsNeedsVsWantsRoute: typeof LessonsNeedsVsWantsRoute
+  LessonsPiggyBankMagicRoute: typeof LessonsPiggyBankMagicRoute
+  LessonsPurposeOfMoneyRoute: typeof LessonsPurposeOfMoneyRoute
+  LessonsSharingGivingRoute: typeof LessonsSharingGivingRoute
+  LessonsSmartOnlineSpendingRoute: typeof LessonsSmartOnlineSpendingRoute
+  LessonsStocksMadeSimpleRoute: typeof LessonsStocksMadeSimpleRoute
+  LessonsWhatIsABankRoute: typeof LessonsWhatIsABankRoute
+  LessonsWhatIsInflationRoute: typeof LessonsWhatIsInflationRoute
+  LessonsWhereMoneyComesFromRoute: typeof LessonsWhereMoneyComesFromRoute
 }
 
 const LessonsRouteChildren: LessonsRouteChildren = {
+  LessonsBudgetingLikeABossRoute: LessonsBudgetingLikeABossRoute,
+  LessonsCompoundInterestRoute: LessonsCompoundInterestRoute,
+  LessonsCountingCoinsRoute: LessonsCountingCoinsRoute,
+  LessonsEarningBeyondPocketMoneyRoute: LessonsEarningBeyondPocketMoneyRoute,
   LessonsNeedsVsWantsRoute: LessonsNeedsVsWantsRoute,
+  LessonsPiggyBankMagicRoute: LessonsPiggyBankMagicRoute,
+  LessonsPurposeOfMoneyRoute: LessonsPurposeOfMoneyRoute,
+  LessonsSharingGivingRoute: LessonsSharingGivingRoute,
+  LessonsSmartOnlineSpendingRoute: LessonsSmartOnlineSpendingRoute,
+  LessonsStocksMadeSimpleRoute: LessonsStocksMadeSimpleRoute,
+  LessonsWhatIsABankRoute: LessonsWhatIsABankRoute,
+  LessonsWhatIsInflationRoute: LessonsWhatIsInflationRoute,
+  LessonsWhereMoneyComesFromRoute: LessonsWhereMoneyComesFromRoute,
 }
 
 const LessonsRouteWithChildren =

@@ -10,7 +10,7 @@ const content: LessonContent = {
   duration: "4 min",
   intro: "Bank aik dosthana imarat hai jo aap ke paisay ki nigrani karti hai — aur thora barhati bhi hai.",
   steps: [
-    { caption: "Imarat", bumble: "Bank ek mehfooz jagah hai jahan log apne paisay rakhte hain.", bubble: "Bank ek mehfooz jagah hai jahan log apne paisay rakhte hain." },
+    { caption: "Imarat", bubble: "Bank ek mehfooz jagah hai jahan log apne paisay rakhte hain." },
     { caption: "Account", bubble: "Aap ka apna account hota hai — jaise apni alag dabba." },
     { caption: "Profit", bubble: "Bank kuch profit deta hai jab aap apne paisay rakhte hain." },
     { caption: "ATM", bubble: "Card ke zariye aap kabhi bhi apna paisa nikaal sakte hain." },
