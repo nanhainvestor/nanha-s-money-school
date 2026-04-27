@@ -34,9 +34,13 @@ function AuthPage() {
     const { error } = mode === "login"
       ? await signIn(email, password)
       : await signUp(email, password, displayName || email.split("@")[0]);
-    setBusy(false);
-    if (error) toast.error(error);
-    else toast.success(mode === "login" ? "Welcome back!" : "Account banaya gaya!");
+    if (error) {
+      setBusy(false);
+      toast.error(error);
+    } else {
+      toast.success(mode === "login" ? "Welcome back!" : "Account banaya gaya!");
+      // keep busy=true; redirect effect will navigate once role loads
+    }
   };
 
   const fillDemo = (kind: "admin" | "parent" | "child") => {
