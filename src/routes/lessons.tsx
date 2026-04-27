@@ -5,10 +5,10 @@ import { ArrowRight, Lock, Sparkles } from "lucide-react";
 export const Route = createFileRoute("/lessons")({
   head: () => ({
     meta: [
-      { title: "The Learning Lab — Money Lessons for Kids | Nanha Investor" },
-      { name: "description", content: "Browse Nanha's story-based lessons across Beginner, Intermediate, and Advanced levels — for ages 6 to 14." },
-      { property: "og:title", content: "The Learning Lab" },
-      { property: "og:description", content: "Story-based money lessons for kids ages 6–14." },
+      { title: "Sabaq — Bachon ke Liye Paisay ki Taleem | Nanha Investor" },
+      { name: "description", content: "Nanha ke kahani par mabni sabaq — Beginner, Intermediate aur Advanced levels — umar 6 se 14 saal." },
+      { property: "og:title", content: "Sabaq — Sabaq ka Lab" },
+      { property: "og:description", content: "Bachon ke liye paisay ke kahani sabaq, umar 6–14." },
     ],
   }),
   component: LessonsPage,
@@ -17,36 +17,36 @@ export const Route = createFileRoute("/lessons")({
 const tracks = [
   {
     level: "Beginner",
-    age: "Ages 6–8",
+    age: "Umar 6–8 saal",
     accent: "bg-primary-soft text-primary",
     lessons: [
-      { title: "Needs vs. Wants", desc: "Nanha wants a bike, but only has $5. What does he do?", free: true },
-      { title: "Where Money Comes From", desc: "Why grown-ups go to work — and what a job really is.", free: true },
-      { title: "The Magic of a Piggy Bank", desc: "Saving = future-you saying thank-you.", free: false },
-      { title: "Counting Coins", desc: "A playful trip to a make-believe market.", free: false },
-      { title: "Sharing & Giving", desc: "Why kindness is also a kind of wealth.", free: false },
+      { title: "Zaruriat aur Khwahishat", desc: "Nanha cycle chahta hai magar uske paas sirf Rs 50 hain. Ab kya kare?", free: true },
+      { title: "Paisay Kahan Se Aate Hain", desc: "Ammi abu kaam kyun karte hain — aur naukri kya hoti hai?", free: true },
+      { title: "Piggy Bank ka Jaadu", desc: "Bachat = mustaqbil ka aap khud aap ka shukriya.", free: false },
+      { title: "Sikkay Ginna", desc: "Aik mazedaar bazar ki sair (Rs aur paisay).", free: false },
+      { title: "Baantna aur Dena", desc: "Meharbani bhi ek qisam ki daulat hai.", free: false },
     ],
   },
   {
     level: "Intermediate",
-    age: "Ages 9–11",
+    age: "Umar 9–11 saal",
     accent: "bg-accent-soft text-accent-foreground",
     lessons: [
-      { title: "Setting a Money Goal", desc: "Big dreams + tiny weekly steps.", free: true },
-      { title: "Budgeting Like a Boss", desc: "The 50-30-20 rule, but kid-sized.", free: false },
-      { title: "What Is a Bank?", desc: "A friendly building that babysits your money.", free: false },
-      { title: "Earning Beyond Allowance", desc: "Side-hustle ideas that aren't lemonade stands.", free: false },
+      { title: "Paisay ka Maqsad", desc: "Baray khwab + chhote haftawar qadam.", free: true },
+      { title: "Boss ki Tarah Budgeting", desc: "50-30-20 ka usool, lekin bachon ke saiz mein.", free: false },
+      { title: "Bank Kya Hai?", desc: "Aik dosthana imarat jo aap ke paisay ki nigrani karti hai.", free: false },
+      { title: "Pocket Money Ke Ilawa Kamai", desc: "Aise side-hustle khayalat jo lemonade stand nahi hain.", free: false },
     ],
   },
   {
     level: "Advanced",
-    age: "Ages 12–14",
+    age: "Umar 12–14 saal",
     accent: "bg-foreground text-background",
     lessons: [
-      { title: "What Is Inflation?", desc: "Why the same chocolate costs more next year.", free: true },
-      { title: "Stocks Explained Simply", desc: "Owning a tiny slice of a giant company.", free: false },
-      { title: "Compound Interest", desc: "The 8th wonder of the world — for real.", free: false },
-      { title: "Smart Spending Online", desc: "Spotting hype, ads, and 'too good to be true'.", free: false },
+      { title: "Inflation Kya Hai?", desc: "Wahi chocolate aglay saal mehngi kyun hoti hai? (Rs 50 → Rs 70)", free: true },
+      { title: "Stocks Asaani Se Samjho", desc: "Aik bohat bari company ka chhota sa hissa rakhna.", free: false },
+      { title: "Compound Interest", desc: "Duniya ka 8 wan ajooba — sach mein.", free: false },
+      { title: "Online Smart Kharch", desc: "Hype, ads aur 'too good to be true' pehchanna.", free: false },
     ],
   },
 ];
@@ -57,11 +57,11 @@ function LessonsPage() {
       <section className="bg-hero">
         <div className="mx-auto max-w-4xl px-4 py-16 text-center sm:px-6">
           <span className="inline-flex items-center gap-2 rounded-full bg-primary-soft px-4 py-1.5 text-xs font-bold uppercase tracking-wider text-primary">
-            <Sparkles className="h-3.5 w-3.5" /> The Learning Lab
+            <Sparkles className="h-3.5 w-3.5" /> Sabaq ka Lab
           </span>
-          <h1 className="mt-5 font-display text-4xl font-extrabold sm:text-5xl">Pick a track. Start a story.</h1>
+          <h1 className="mt-5 font-display text-4xl font-extrabold sm:text-5xl">Track chunein. Kahani shuru karein.</h1>
           <p className="mx-auto mt-4 max-w-2xl text-muted-foreground">
-            Every lesson is a 3-minute story with one tiny idea, one drawing, and one mission for tomorrow.
+            Har sabaq aik 3 minute ki kahani hai — aik chhota khayal, aik tasveer, aur aik kal ka mission.
           </p>
         </div>
       </section>
@@ -73,12 +73,12 @@ function LessonsPage() {
               <div>
                 <span className={`rounded-full px-3 py-1 text-xs font-bold ${track.accent}`}>{track.level}</span>
                 <h2 className="mt-3 font-display text-3xl font-extrabold">{track.level} Track</h2>
-                <p className="text-sm text-muted-foreground">{track.age} · {track.lessons.length} lessons</p>
+                <p className="text-sm text-muted-foreground">{track.age} · {track.lessons.length} sabaq</p>
               </div>
             </div>
             <div className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
               {track.lessons.map((l, i) => {
-                const isLive = l.title === "Needs vs. Wants";
+                const isLive = l.title === "Zaruriat aur Khwahishat";
                 const Wrapper: React.ElementType = isLive ? Link : "article";
                 const wrapperProps = isLive ? { to: "/lessons/needs-vs-wants" } : {};
                 return (
@@ -90,7 +90,7 @@ function LessonsPage() {
                     <div className="flex items-center justify-between">
                       <span className="font-display text-3xl font-extrabold text-muted-foreground/40">{String(i + 1).padStart(2, "0")}</span>
                       {l.free ? (
-                        <span className="rounded-full bg-accent px-2.5 py-0.5 text-[10px] font-bold uppercase text-accent-foreground">Free peek</span>
+                        <span className="rounded-full bg-accent px-2.5 py-0.5 text-[10px] font-bold uppercase text-accent-foreground">Muft</span>
                       ) : (
                         <Lock className="h-4 w-4 text-muted-foreground" />
                       )}
@@ -98,7 +98,7 @@ function LessonsPage() {
                     <h3 className="mt-4 text-lg font-bold">{l.title}</h3>
                     <p className="mt-2 flex-1 text-sm text-muted-foreground">{l.desc}</p>
                     <div className="mt-5 flex items-center gap-2 text-sm font-bold text-primary">
-                      {isLive ? "Start lesson" : l.free ? "Coming soon" : "Save my spot"} <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
+                      {isLive ? "Sabaq shuru karein" : l.free ? "Jald aa raha hai" : "Meri jagah rakhein"} <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
                     </div>
                   </Wrapper>
                 );
@@ -110,10 +110,10 @@ function LessonsPage() {
 
       <section className="px-4 pb-20 sm:px-6">
         <div className="mx-auto max-w-4xl rounded-[2.5rem] bg-gradient-primary p-10 text-center text-primary-foreground shadow-pop md:p-14">
-          <h2 className="font-display text-3xl font-extrabold">Want the full curriculum?</h2>
-          <p className="mt-3 text-primary-foreground/90">Get the parent syllabus and follow along week by week.</p>
+          <h2 className="font-display text-3xl font-extrabold">Mukammal curriculum chahiye?</h2>
+          <p className="mt-3 text-primary-foreground/90">Sirf Rs 499 / mahina. Walidain syllabus aur weekly tips bhi shamil.</p>
           <Button asChild variant="sun" size="xl" className="mt-6">
-            <Link to="/parents">Open the Parent Center</Link>
+            <Link to="/parents">Walidain Center Kholein</Link>
           </Button>
         </div>
       </section>
