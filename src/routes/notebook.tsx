@@ -4,22 +4,22 @@ import { Sparkles, ArrowRight } from "lucide-react";
 export const Route = createFileRoute("/notebook")({
   head: () => ({
     meta: [
-      { title: "Nanha's Notebook — Money Tips for Kids & Parents" },
-      { name: "description", content: "Short, practical reads on raising money-smart kids — from explaining inflation to picking a child's first book about finance." },
-      { property: "og:title", content: "Nanha's Notebook" },
-      { property: "og:description", content: "Short, practical reads on raising money-smart kids." },
+      { title: "Nanha ki Note Book — Bachon aur Walidain ke Liye Tips" },
+      { name: "description", content: "Money-smart bachay parwarish ke chhote, kaam ki padhayi — Roman Urdu mein." },
+      { property: "og:title", content: "Nanha ki Note Book" },
+      { property: "og:description", content: "Bachon ke liye paisay ki taleem par chhote articles." },
     ],
   }),
   component: NotebookPage,
 });
 
 const posts = [
-  { tag: "For Parents", title: "How to explain inflation to a 10-year-old", read: "4 min read", excerpt: "A chocolate bar, a calendar, and one tiny analogy that actually sticks." },
-  { tag: "Book List", title: "5 best books to teach kids about money", read: "6 min read", excerpt: "Hand-picked picture books and chapter books, sorted by age." },
-  { tag: "Activity", title: "The $20 Saturday challenge", read: "3 min read", excerpt: "A weekend game that quietly teaches budgeting, trade-offs, and patience." },
-  { tag: "For Kids", title: "What is a 'stock', really?", read: "2 min read", excerpt: "Imagine a giant pizza you can own one tiny slice of…" },
-  { tag: "For Parents", title: "Allowance: pay for chores or not?", read: "5 min read", excerpt: "The two schools of thought, and a third option most families miss." },
-  { tag: "Activity", title: "Make a goal jar in 10 minutes", read: "2 min read", excerpt: "All you need is a jar, a marker, and a tiny dream." },
+  { tag: "Walidain ke Liye", title: "Inflation 10 saal ke bachay ko kaise samjhayein", read: "4 min", excerpt: "Aik chocolate, aik calendar, aur aik chhoti misaal jo waqai zehan mein bait jati hai." },
+  { tag: "Kitaab List", title: "Bachon ko paisay sikhane ki 5 behtareen kitaabein", read: "6 min", excerpt: "Umar ke hisaab se chuni gayi tasveer wali kitaabein aur chapter books." },
+  { tag: "Activity", title: "Rs 500 ka Saturday challenge", read: "3 min", excerpt: "Aik weekend game jo chupkay se budgeting, faislay aur sabar sikhata hai." },
+  { tag: "Bachon ke Liye", title: "'Stock' asal mein hota kya hai?", read: "2 min", excerpt: "Sochain aik bohat bara pizza jiska aap ek chhota sa tukra rakh sakte hain..." },
+  { tag: "Walidain ke Liye", title: "Pocket money: kaam ke badle ya yun hi?", read: "5 min", excerpt: "Do soch, aur aik teesra option jo zyada families miss karti hain." },
+  { tag: "Activity", title: "10 minute mein Maqsad Jar banayein", read: "2 min", excerpt: "Sirf aik jar, aik marker, aur aik chhota khwab chahiye." },
 ];
 
 function NotebookPage() {
@@ -28,11 +28,11 @@ function NotebookPage() {
       <section className="bg-hero">
         <div className="mx-auto max-w-4xl px-4 py-16 text-center sm:px-6">
           <span className="inline-flex items-center gap-2 rounded-full bg-primary-soft px-4 py-1.5 text-xs font-bold uppercase tracking-wider text-primary">
-            <Sparkles className="h-3.5 w-3.5" /> Nanha&apos;s Notebook
+            <Sparkles className="h-3.5 w-3.5" /> Nanha ki Note Book
           </span>
-          <h1 className="mt-5 font-display text-4xl font-extrabold sm:text-5xl">Tiny reads. Big ideas.</h1>
+          <h1 className="mt-5 font-display text-4xl font-extrabold sm:text-5xl">Chhoti padhayi. Baray khayalat.</h1>
           <p className="mx-auto mt-4 max-w-2xl text-muted-foreground">
-            A growing library of short articles, family activities, and book recommendations.
+            Chhote articles, family activities, aur kitaab ki tajaweez ka barhta hua silsila.
           </p>
         </div>
       </section>
@@ -47,7 +47,7 @@ function NotebookPage() {
               <p className="mt-2 flex-1 text-sm text-muted-foreground">{p.excerpt}</p>
               <div className="mt-5 flex items-center justify-between text-sm">
                 <span className="text-muted-foreground">{p.read}</span>
-                <span className="flex items-center gap-1 font-bold text-primary">Read <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" /></span>
+                <span className="flex items-center gap-1 font-bold text-primary">Parhein <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" /></span>
               </div>
             </article>
           ))}
