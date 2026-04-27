@@ -2,6 +2,7 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { RoleGuard } from "@/components/RoleGuard";
 import { useAuth } from "@/hooks/useAuth";
+import { requireRole } from "@/lib/route-guards";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
@@ -9,6 +10,7 @@ import { getAllProgress, getCurrentStreak, getWeekActivity, type LessonProgress 
 import { BookOpen, Flame, Trophy, NotebookPen, LogOut } from "lucide-react";
 
 export const Route = createFileRoute("/dashboard/child")({
+  beforeLoad: () => requireRole(["child"]),
   component: () => (
     <RoleGuard allow={["child"]}>
       <ChildDashboard />
