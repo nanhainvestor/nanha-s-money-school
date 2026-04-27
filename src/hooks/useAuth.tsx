@@ -26,9 +26,16 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   const fetchRole = async (uid: string) => {
     setRoleLoading(true);
-    const { data } = await supabase.from("user_roles").select("role").eq("user_id", uid).maybeSingle();
-    setRole((data?.role as AppRole) ?? null);
-    setRoleLoading(false);
+    try {
+      const { data, error } = await supabase.from("user_roles").select("role").eq("user_id", uid).maybeSingle();
+      if (error) throw error;
+      setRole((data?.role as AppRole) ?? null);
+    } catch (error) {
+      console.error("Unable to load user role", error);
+      setRole(null);
+    } finally {
+      setRoleLoading(false);
+    }
   };
 
   useEffect(() => {
@@ -36,6 +43,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       setSession(s);
       setUser(s?.user ?? null);
       if (s?.user) {
+        setRole(null);
         setRoleLoading(true);
         setTimeout(() => fetchRole(s.user.id), 0);
       } else {
@@ -47,7 +55,11 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       setSession(s);
       setUser(s?.user ?? null);
       if (s?.user) fetchRole(s.user.id).finally(() => setLoading(false));
-      else setLoading(false);
+      else {
+        setRole(null);
+        setRoleLoading(false);
+        setLoading(false);
+      }
     });
     return () => sub.subscription.unsubscribe();
   }, []);
