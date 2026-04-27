@@ -1,6 +1,6 @@
 import { ReactNode, useEffect } from "react";
 import { Link, useNavigate } from "@tanstack/react-router";
-import { useAuth, type AppRole } from "@/hooks/useAuth";
+import { getDashboardPath, useAuth, type AppRole } from "@/hooks/useAuth";
 import { DashboardSkeleton } from "@/components/DashboardSkeleton";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
@@ -17,8 +17,7 @@ export function RoleGuard({ allow, children }: { allow: AppRole[]; children: Rea
     }
     if (!role) return;
     if (!allow.includes(role)) {
-      const dest = role === "admin" ? "/admin" : role === "parent" ? "/dashboard/parent" : "/dashboard/child";
-      navigate({ to: dest });
+      navigate({ to: getDashboardPath(role), replace: true });
     }
   }, [user, role, loading, roleLoading, allow, navigate]);
 
