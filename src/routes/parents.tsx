@@ -40,6 +40,8 @@ function ParentsPage() {
         </div>
       </section>
 
+      <ProgressSummary />
+
       {/* Roadmap */}
       <section className="mx-auto max-w-6xl px-4 py-16 sm:px-6">
         <h2 className="font-display text-3xl font-extrabold">Curriculum roadmap</h2>
