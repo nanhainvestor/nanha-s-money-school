@@ -12,7 +12,7 @@ export const Route = createFileRoute("/auth")({
 });
 
 function AuthPage() {
-  const { signIn, signUp, user, role, loading } = useAuth();
+  const { signIn, signUp, user, role, loading, roleLoading } = useAuth();
   const navigate = useNavigate();
   const [mode, setMode] = useState<"login" | "signup">("login");
   const [email, setEmail] = useState("");
@@ -21,11 +21,12 @@ function AuthPage() {
   const [busy, setBusy] = useState(false);
 
   useEffect(() => {
-    if (!loading && user && role) {
+    if (loading || roleLoading) return;
+    if (user && role) {
       const dest = role === "admin" ? "/admin" : role === "parent" ? "/dashboard/parent" : "/dashboard/child";
       navigate({ to: dest });
     }
-  }, [user, role, loading, navigate]);
+  }, [user, role, loading, roleLoading, navigate]);
 
   const onSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
