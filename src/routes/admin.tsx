@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { RoleGuard } from "@/components/RoleGuard";
 import { useAuth, type AppRole } from "@/hooks/useAuth";
 import { supabase } from "@/integrations/supabase/client";
+import { requireRole } from "@/lib/route-guards";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
@@ -10,6 +11,7 @@ import { LogOut, Users, Shield, BookOpen } from "lucide-react";
 import { toast } from "sonner";
 
 export const Route = createFileRoute("/admin")({
+  beforeLoad: () => requireRole(["admin"]),
   component: () => (
     <RoleGuard allow={["admin"]}>
       <AdminDashboard />
