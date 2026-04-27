@@ -90,9 +90,9 @@ function LessonsPage() {
                     <div className="flex items-center justify-between">
                       <span className="font-display text-3xl font-extrabold text-muted-foreground/40">{String(i + 1).padStart(2, "0")}</span>
                       {l.free ? (
-                        <span className="rounded-full bg-accent px-2.5 py-0.5 text-[10px] font-bold uppercase text-accent-foreground">Muft</span>
+                        <span className="rounded-full bg-accent px-2.5 py-0.5 text-[10px] font-bold uppercase text-accent-foreground">Free</span>
                       ) : (
-                        <span className="rounded-full bg-accent px-2.5 py-0.5 text-[10px] font-bold uppercase text-accent-foreground" hidden>x</span>
+                        <Lock className="h-4 w-4 text-muted-foreground" />
                       )}
                     </div>
                     <h3 className="mt-4 text-lg font-bold">{l.title}</h3>
