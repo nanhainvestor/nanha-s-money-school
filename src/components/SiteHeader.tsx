@@ -83,9 +83,14 @@ export function SiteHeader() {
                 {item.label}
               </Link>
             ))}
-            <Button asChild variant="hero" className="mt-2">
-              <Link to="/lessons" onClick={() => setOpen(false)}>Start First Lesson</Link>
-            </Button>
+            {user ? (
+              <Button asChild variant="hero" className="mt-2"><Link to={dashHref as any} onClick={() => setOpen(false)}>Dashboard</Link></Button>
+            ) : (
+              <>
+                <Button asChild variant="outline" className="mt-2"><Link to="/auth" onClick={() => setOpen(false)}>Login</Link></Button>
+                <Button asChild variant="hero"><Link to="/lessons" onClick={() => setOpen(false)}>Start First Lesson</Link></Button>
+              </>
+            )}
           </nav>
         </div>
       )}
