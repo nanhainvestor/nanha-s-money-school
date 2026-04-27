@@ -4,13 +4,17 @@ import type { Session, User } from "@supabase/supabase-js";
 
 export type AppRole = "admin" | "parent" | "child";
 
+export function getDashboardPath(role: AppRole) {
+  return role === "admin" ? "/admin" : role === "parent" ? "/dashboard/parent" : "/dashboard/child";
+}
+
 interface AuthCtx {
   user: User | null;
   session: Session | null;
   role: AppRole | null;
   loading: boolean;
   roleLoading: boolean;
-  signIn: (email: string, password: string) => Promise<{ error: string | null }>;
+  signIn: (email: string, password: string) => Promise<{ error: string | null; role: AppRole | null }>;
   signUp: (email: string, password: string, displayName: string) => Promise<{ error: string | null }>;
   signOut: () => Promise<void>;
 }
@@ -29,10 +33,13 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     try {
       const { data, error } = await supabase.from("user_roles").select("role").eq("user_id", uid).maybeSingle();
       if (error) throw error;
-      setRole((data?.role as AppRole) ?? null);
+      const nextRole = (data?.role as AppRole) ?? null;
+      setRole(nextRole);
+      return nextRole;
     } catch (error) {
       console.error("Unable to load user role", error);
       setRole(null);
+      return null;
     } finally {
       setRoleLoading(false);
     }
@@ -65,8 +72,15 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }, []);
 
   const signIn = async (email: string, password: string) => {
-    const { error } = await supabase.auth.signInWithPassword({ email, password });
-    return { error: error?.message ?? null };
+    setRole(null);
+    setRoleLoading(true);
+    const { data, error } = await supabase.auth.signInWithPassword({ email, password });
+    if (error || !data.user) {
+      setRoleLoading(false);
+      return { error: error?.message ?? "Login failed", role: null };
+    }
+    const nextRole = await fetchRole(data.user.id);
+    return { error: null, role: nextRole };
   };
   const signUp = async (email: string, password: string, displayName: string) => {
     const redirectUrl = `${window.location.origin}/`;
