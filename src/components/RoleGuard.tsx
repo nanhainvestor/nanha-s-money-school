@@ -1,6 +1,7 @@
 import { ReactNode, useEffect } from "react";
 import { useNavigate } from "@tanstack/react-router";
 import { useAuth, type AppRole } from "@/hooks/useAuth";
+import { DashboardSkeleton } from "@/components/DashboardSkeleton";
 
 export function RoleGuard({ allow, children }: { allow: AppRole[]; children: ReactNode }) {
   const { user, role, loading, roleLoading } = useAuth();
@@ -12,23 +13,22 @@ export function RoleGuard({ allow, children }: { allow: AppRole[]; children: Rea
       navigate({ to: "/auth" });
       return;
     }
-    if (!role) return; // no role assigned yet
+    if (!role) return;
     if (!allow.includes(role)) {
       const dest = role === "admin" ? "/admin" : role === "parent" ? "/dashboard/parent" : "/dashboard/child";
       navigate({ to: dest });
     }
   }, [user, role, loading, roleLoading, allow, navigate]);
 
-  if (loading || roleLoading || !user) {
-    return <div className="mx-auto max-w-6xl px-4 py-16 text-center text-muted-foreground">Loading...</div>;
+  // Show skeleton while auth/role loading or while redirecting unauthenticated users
+  if (loading || roleLoading || !user || !role) {
+    return <DashboardSkeleton />;
   }
-  if (!role) {
-    return (
-      <div className="mx-auto max-w-md px-4 py-16 text-center">
-        <p className="text-muted-foreground">Aapke account ka koi role nahi mila. Admin se rabta karein.</p>
-      </div>
-    );
+
+  if (!allow.includes(role)) {
+    // Redirect in flight — keep skeleton visible to avoid flash
+    return <DashboardSkeleton />;
   }
-  if (!allow.includes(role)) return null;
-  return <>{children}</>;
+
+  return <div className="animate-in fade-in duration-300">{children}</div>;
 }
