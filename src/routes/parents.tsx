@@ -2,8 +2,14 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
-import { Download, ShieldCheck, CheckCircle2, Sparkles, TrendingUp, Trophy, Clock } from "lucide-react";
-import { getLessonProgress, type LessonProgress } from "@/lib/progress";
+import { Download, ShieldCheck, CheckCircle2, Sparkles, TrendingUp, Trophy, Clock, Flame, Bell, Heart } from "lucide-react";
+import {
+  getLessonProgress,
+  getCurrentStreak,
+  getWeekActivity,
+  getDaysSinceLastActivity,
+  type LessonProgress,
+} from "@/lib/progress";
 
 export const Route = createFileRoute("/parents")({
   head: () => ({
