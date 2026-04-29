@@ -1,11 +1,14 @@
 import { Link } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
-import { saveLessonProgress } from "@/lib/progress";
+import { useLMS, markLessonComplete, lessonState } from "@/hooks/useLMS";
+import { useAuth } from "@/hooks/useAuth";
+import { toast } from "sonner";
 import {
   ArrowLeft,
   ArrowRight,
   CheckCircle2,
+  Lock,
   Sparkles,
   Target,
   XCircle,
