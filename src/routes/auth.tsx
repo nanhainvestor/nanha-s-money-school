@@ -8,9 +8,8 @@ import { Card } from "@/components/ui/card";
 import { toast } from "sonner";
 
 export const Route = createFileRoute("/auth")({
-  validateSearch: (s: Record<string, unknown>) => ({
-    redirect: typeof s.redirect === "string" ? s.redirect : undefined,
-  }),
+  validateSearch: (s: Record<string, unknown>): { redirect?: string } =>
+    typeof s.redirect === "string" ? { redirect: s.redirect } : {},
   component: AuthPage,
 });
 
