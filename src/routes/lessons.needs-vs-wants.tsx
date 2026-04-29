@@ -1,7 +1,9 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useEffect, useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
-import { saveLessonProgress } from "@/lib/progress";
+import { useAuth } from "@/hooks/useAuth";
+import { useLMS, markLessonComplete, lessonState } from "@/hooks/useLMS";
+import { toast } from "sonner";
 import {
   ArrowLeft,
   ArrowRight,
@@ -10,6 +12,7 @@ import {
   Cookie,
   Heart,
   HelpCircle,
+  Lock,
   PiggyBank,
   Sparkles,
   Target,
@@ -102,6 +105,32 @@ const SORT_ITEMS: { label: string; emoji: string; answer: "need" | "want" }[] = 
 ];
 
 function NeedsVsWantsLesson() {
+  const { user, loading: authLoading } = useAuth();
+  const { data, loading } = useLMS();
+
+  if (authLoading || (user && loading)) {
+    return (
+      <div className="mx-auto max-w-4xl px-4 py-20 text-center text-sm text-muted-foreground">
+        Sabaq load ho raha hai…
+      </div>
+    );
+  }
+
+  if (user && lessonState("needs-vs-wants", data.progress) === "locked") {
+    return (
+      <div className="mx-auto max-w-2xl px-4 py-20 text-center">
+        <div className="mx-auto grid h-16 w-16 place-items-center rounded-full bg-muted">
+          <Lock className="h-7 w-7 text-muted-foreground" />
+        </div>
+        <h1 className="mt-6 font-display text-3xl font-extrabold">Yeh sabaq abhi locked hai</h1>
+        <p className="mt-3 text-muted-foreground">Pehla sabaq mukammal karein.</p>
+        <Button asChild variant="hero" size="lg" className="mt-6">
+          <Link to="/lessons">Lessons par wapas</Link>
+        </Button>
+      </div>
+    );
+  }
+
   return (
     <div>
       <LessonHeader />
@@ -329,22 +358,30 @@ function Flowchart() {
 /* -------------------- Sort Game -------------------- */
 
 function SortGame() {
+  const { user } = useAuth();
   const [picks, setPicks] = useState<Record<string, "need" | "want" | undefined>>({});
+  const [saved, setSaved] = useState(false);
   const correct = SORT_ITEMS.filter((it) => picks[it.label] === it.answer).length;
   const answered = Object.keys(picks).length;
   const done = answered === SORT_ITEMS.length;
 
   useEffect(() => {
-    if (!done) return;
-    saveLessonProgress({
+    if (!done || saved || !user) return;
+    setSaved(true);
+    markLessonComplete({
       lessonId: "needs-vs-wants",
-      title: "Needs vs. Wants",
-      completed: true,
       quizCorrect: correct,
       quizTotal: SORT_ITEMS.length,
-      updatedAt: new Date().toISOString(),
-    });
-  }, [done, correct]);
+    })
+      .then((res) => {
+        if (res.xpEarned > 0) toast.success(`+${res.xpEarned} XP! Sabaq mukammal 🎉`);
+      })
+      .catch((e) => {
+        console.error(e);
+        setSaved(false);
+        toast.error("Progress save nahi hua.");
+      });
+  }, [done, saved, correct, user]);
 
   return (
     <section className="mx-auto max-w-5xl px-4 py-16 sm:px-6">

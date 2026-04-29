@@ -1,13 +1,13 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { useEffect, useState } from "react";
 import { RoleGuard } from "@/components/RoleGuard";
 import { useAuth } from "@/hooks/useAuth";
 import { requireRole } from "@/lib/route-guards";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
-import { getAllProgress, getCurrentStreak, getWeekActivity, type LessonProgress } from "@/lib/progress";
-import { BookOpen, Flame, Trophy, NotebookPen, LogOut } from "lucide-react";
+import { useLMS, lessonState } from "@/hooks/useLMS";
+import { LESSONS, BADGES, TRACKS } from "@/lib/lessons-catalog";
+import { BookOpen, Flame, Trophy, NotebookPen, LogOut, Lock, CheckCircle2, Star } from "lucide-react";
 
 export const Route = createFileRoute("/dashboard/child")({
   beforeLoad: () => requireRole(["child"]),
@@ -18,42 +18,13 @@ export const Route = createFileRoute("/dashboard/child")({
   ),
 });
 
-const LESSONS = [
-  { id: "purpose-of-money", title: "Purpose of Money" },
-  { id: "needs-vs-wants", title: "Needs vs. Wants" },
-  { id: "counting-coins", title: "Counting Coins" },
-  { id: "where-money-comes-from", title: "Where Money Comes From" },
-  { id: "piggy-bank-magic", title: "Piggy Bank Magic" },
-  { id: "what-is-a-bank", title: "What is a Bank?" },
-  { id: "budgeting-like-a-boss", title: "Budgeting Like a Boss" },
-  { id: "smart-online-spending", title: "Smart Online Spending" },
-  { id: "earning-beyond-pocket-money", title: "Earning Beyond Pocket Money" },
-  { id: "sharing-giving", title: "Sharing & Giving" },
-  { id: "what-is-inflation", title: "What is Inflation?" },
-  { id: "compound-interest", title: "Compound Interest" },
-  { id: "stocks-made-simple", title: "Stocks Made Simple" },
-];
-
 function ChildDashboard() {
   const { user, signOut } = useAuth();
-  const [progress, setProgress] = useState<Record<string, LessonProgress>>({});
-  const [streak, setStreak] = useState(0);
-  const [week, setWeek] = useState(getWeekActivity());
+  const { data, loading } = useLMS();
 
-  useEffect(() => {
-    const refresh = () => {
-      setProgress(getAllProgress());
-      setStreak(getCurrentStreak());
-      setWeek(getWeekActivity());
-    };
-    refresh();
-    window.addEventListener("nanha:progress-updated", refresh);
-    return () => window.removeEventListener("nanha:progress-updated", refresh);
-  }, []);
-
-  const completed = LESSONS.filter((l) => progress[l.id]?.completed).length;
+  const completed = data.progress.filter((p) => p.completed).length;
   const pct = Math.round((completed / LESSONS.length) * 100);
-  const totalCorrect = Object.values(progress).reduce((s, p) => s + (p.quizCorrect ?? 0), 0);
+  const next = LESSONS.find((l) => lessonState(l.id, data.progress) !== "completed");
 
   return (
     <div className="mx-auto max-w-6xl px-4 py-10">
@@ -66,57 +37,116 @@ function ChildDashboard() {
         <Button variant="outline" size="sm" onClick={signOut}><LogOut className="mr-2 h-4 w-4" />Logout</Button>
       </div>
 
-      <div className="mt-6 grid gap-4 sm:grid-cols-3">
+      {next && !loading && (
+        <Card className="mt-6 flex flex-wrap items-center justify-between gap-4 bg-gradient-primary p-6 text-primary-foreground shadow-pop">
+          <div>
+            <p className="text-xs font-bold uppercase tracking-wider opacity-80">Aglay sabaq</p>
+            <p className="font-display text-2xl font-extrabold">{next.title}</p>
+            <p className="mt-1 text-sm opacity-90">+{next.xp} XP earn karein</p>
+          </div>
+          <Button asChild variant="sun" size="lg">
+            <Link to={`/lessons/${next.id}` as string}>Continue →</Link>
+          </Button>
+        </Card>
+      )}
+
+      <div className="mt-6 grid gap-4 sm:grid-cols-4">
         <Card className="p-5">
-          <div className="flex items-center gap-3"><BookOpen className="h-5 w-5 text-primary" /><span className="text-sm text-muted-foreground">Lessons Complete</span></div>
+          <div className="flex items-center gap-3"><BookOpen className="h-5 w-5 text-primary" /><span className="text-sm text-muted-foreground">Lessons</span></div>
           <p className="mt-2 text-3xl font-bold">{completed}/{LESSONS.length}</p>
           <Progress value={pct} className="mt-3 h-2" />
         </Card>
         <Card className="p-5">
-          <div className="flex items-center gap-3"><Flame className="h-5 w-5 text-orange-500" /><span className="text-sm text-muted-foreground">Streak</span></div>
-          <p className="mt-2 text-3xl font-bold">{streak} <span className="text-base font-normal text-muted-foreground">din</span></p>
-          <div className="mt-3 flex gap-1">
-            {week.map((d) => (
-              <span key={d.key} className={`h-3 flex-1 rounded ${d.active ? "bg-orange-500" : "bg-muted"}`} title={d.key} />
-            ))}
-          </div>
+          <div className="flex items-center gap-3"><Star className="h-5 w-5 text-yellow-500" /><span className="text-sm text-muted-foreground">Total XP</span></div>
+          <p className="mt-2 text-3xl font-bold">{data.stats.total_xp}</p>
+          <p className="mt-1 text-xs text-muted-foreground">Khud kamaye hue points</p>
         </Card>
         <Card className="p-5">
-          <div className="flex items-center gap-3"><Trophy className="h-5 w-5 text-yellow-500" /><span className="text-sm text-muted-foreground">Quiz Score</span></div>
-          <p className="mt-2 text-3xl font-bold">{totalCorrect}</p>
-          <p className="mt-1 text-xs text-muted-foreground">Total sahi jawabat</p>
+          <div className="flex items-center gap-3"><Flame className="h-5 w-5 text-orange-500" /><span className="text-sm text-muted-foreground">Streak</span></div>
+          <p className="mt-2 text-3xl font-bold">{data.stats.current_streak} <span className="text-base font-normal text-muted-foreground">din</span></p>
+          <p className="mt-1 text-xs text-muted-foreground">Best: {data.stats.longest_streak}</p>
+        </Card>
+        <Card className="p-5">
+          <div className="flex items-center gap-3"><Trophy className="h-5 w-5 text-amber-500" /><span className="text-sm text-muted-foreground">Badges</span></div>
+          <p className="mt-2 text-3xl font-bold">{data.badges.length}/{BADGES.length}</p>
+          <p className="mt-1 text-xs text-muted-foreground">Inami nishaniyaan</p>
         </Card>
       </div>
 
       <div className="mt-8 grid gap-6 lg:grid-cols-3">
         <Card className="p-6 lg:col-span-2">
           <h2 className="font-display text-xl font-bold">My Lessons</h2>
-          <div className="mt-4 space-y-2">
-            {LESSONS.map((l) => {
-              const p = progress[l.id];
+          <div className="mt-4 space-y-4">
+            {TRACKS.map((track) => {
+              const trackLessons = LESSONS.filter((l) => l.track === track.key);
+              const trackDone = trackLessons.filter((l) => data.progress.find((p) => p.lesson_id === l.id && p.completed)).length;
               return (
-                <Link key={l.id} to={`/lessons/${l.id}` as any} className="flex items-center justify-between rounded-lg border border-border p-3 transition hover:border-primary hover:bg-primary-soft/30">
-                  <div>
-                    <p className="font-semibold">{l.title}</p>
-                    <p className="text-xs text-muted-foreground">
-                      {p?.completed ? `✓ Mukammal · ${p.quizCorrect}/${p.quizTotal}` : "Shuru karein"}
-                    </p>
+                <div key={track.key}>
+                  <div className="mb-2 flex items-center justify-between">
+                    <p className="text-xs font-bold uppercase tracking-wider text-muted-foreground">{track.label} · {track.age}</p>
+                    <p className="text-xs font-bold">{trackDone}/{trackLessons.length}</p>
                   </div>
-                  <Button size="sm" variant={p?.completed ? "outline" : "hero"}>{p?.completed ? "Review" : "Start"}</Button>
-                </Link>
+                  <div className="space-y-2">
+                    {trackLessons.map((l) => {
+                      const state = lessonState(l.id, data.progress);
+                      const row = data.progress.find((p) => p.lesson_id === l.id);
+                      return (
+                        <div key={l.id} className={`flex items-center justify-between rounded-lg border p-3 ${state === "locked" ? "border-dashed bg-muted/30 opacity-60" : "border-border"}`}>
+                          <div className="min-w-0">
+                            <p className="truncate font-semibold">{l.title}</p>
+                            <p className="text-xs text-muted-foreground">
+                              {state === "completed" && row ? `✓ Mukammal · Quiz ${row.quiz_correct}/${row.quiz_total} · +${row.xp_earned} XP` :
+                               state === "locked" ? "Locked — pehle wala mukammal karein" :
+                               "Shuru karein"}
+                            </p>
+                          </div>
+                          {state === "locked" ? (
+                            <Lock className="h-4 w-4 text-muted-foreground" />
+                          ) : (
+                            <Button asChild size="sm" variant={state === "completed" ? "outline" : "hero"}>
+                              <Link to={`/lessons/${l.id}` as string}>{state === "completed" ? "Review" : "Start"}</Link>
+                            </Button>
+                          )}
+                        </div>
+                      );
+                    })}
+                  </div>
+                </div>
               );
             })}
           </div>
         </Card>
 
-        <Card className="p-6">
-          <h2 className="font-display text-xl font-bold">Quick Links</h2>
-          <div className="mt-4 space-y-2">
-            <Button asChild variant="outline" className="w-full justify-start"><Link to="/notebook"><NotebookPen className="mr-2 h-4 w-4" />My Notebook</Link></Button>
-            <Button asChild variant="outline" className="w-full justify-start"><Link to="/lessons">All Lessons</Link></Button>
-            <Button asChild variant="outline" className="w-full justify-start"><Link to="/faq">Madad / FAQ</Link></Button>
-          </div>
-        </Card>
+        <div className="space-y-6">
+          <Card className="p-6">
+            <h2 className="font-display text-xl font-bold">Badges</h2>
+            <div className="mt-4 grid grid-cols-2 gap-3">
+              {BADGES.map((b) => {
+                const earned = data.badges.includes(b.code);
+                return (
+                  <div key={b.code} className={`rounded-xl border p-3 text-center ${earned ? "border-primary/40 bg-primary-soft" : "border-dashed border-border bg-muted/20 opacity-60"}`}>
+                    <div className="text-3xl">{earned ? b.emoji : "🔒"}</div>
+                    <p className="mt-1 text-xs font-bold">{b.label}</p>
+                    <p className="text-[10px] text-muted-foreground">{b.description}</p>
+                  </div>
+                );
+              })}
+            </div>
+          </Card>
+
+          <Card className="p-6">
+            <h2 className="font-display text-xl font-bold">Quick Links</h2>
+            <div className="mt-4 space-y-2">
+              <Button asChild variant="outline" className="w-full justify-start"><Link to="/notebook"><NotebookPen className="mr-2 h-4 w-4" />My Notebook</Link></Button>
+              <Button asChild variant="outline" className="w-full justify-start"><Link to="/lessons">All Lessons</Link></Button>
+              <Button asChild variant="outline" className="w-full justify-start"><Link to="/faq">Madad / FAQ</Link></Button>
+            </div>
+            <div className="mt-4 rounded-lg bg-muted/40 p-3">
+              <p className="text-xs font-bold uppercase tracking-wider text-muted-foreground">Mera ID (parent ko share karein)</p>
+              <p className="mt-1 break-all font-mono text-[11px]">{user?.id}</p>
+            </div>
+          </Card>
+        </div>
       </div>
     </div>
   );
