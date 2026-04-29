@@ -66,15 +66,52 @@ const levelStyles = {
 
 export function LessonTemplate({ content }: { content: LessonContent }) {
   return (
-    <div>
+    <LessonGate lessonId={content.id}>
       <Header content={content} />
       <Story content={content} />
       <Flow content={content} />
       <Quiz content={content} />
       <Mission content={content} />
       <NextUp content={content} />
-    </div>
+    </LessonGate>
   );
+}
+
+function LessonGate({ lessonId, children }: { lessonId: string; children: React.ReactNode }) {
+  const { user, loading: authLoading } = useAuth();
+  const { data, loading } = useLMS();
+
+  if (authLoading || (user && loading)) {
+    return (
+      <div className="mx-auto max-w-4xl px-4 py-20 text-center text-sm text-muted-foreground">
+        Sabaq load ho raha hai…
+      </div>
+    );
+  }
+
+  // Guests can preview lessons (no progress saved). Logged-in users get the gate.
+  if (!user) return <>{children}</>;
+
+  const state = lessonState(lessonId, data.progress);
+  if (state === "locked") {
+    return (
+      <div className="mx-auto max-w-2xl px-4 py-20 text-center">
+        <div className="mx-auto grid h-16 w-16 place-items-center rounded-full bg-muted">
+          <Lock className="h-7 w-7 text-muted-foreground" />
+        </div>
+        <h1 className="mt-6 font-display text-3xl font-extrabold">Yeh sabaq abhi locked hai</h1>
+        <p className="mt-3 text-muted-foreground">
+          Pehle wala sabaq mukammal karein, phir yeh khul jaye ga.
+        </p>
+        <div className="mt-6">
+          <Button asChild variant="hero" size="lg">
+            <Link to="/lessons">Lessons par wapas</Link>
+          </Button>
+        </div>
+      </div>
+    );
+  }
+  return <>{children}</>;
 }
 
 function Header({ content }: { content: LessonContent }) {
@@ -211,7 +248,10 @@ function Flow({ content }: { content: LessonContent }) {
 }
 
 function Quiz({ content }: { content: LessonContent }) {
+  const { user } = useAuth();
   const [picks, setPicks] = useState<Record<number, number>>({});
+  const [saved, setSaved] = useState(false);
+  const [saving, setSaving] = useState(false);
   const correct = content.quiz.reduce(
     (s, q, i) => s + (picks[i] === q.answer ? 1 : 0),
     0,
@@ -220,16 +260,25 @@ function Quiz({ content }: { content: LessonContent }) {
   const done = answered === content.quiz.length;
 
   useEffect(() => {
-    if (!done) return;
-    saveLessonProgress({
+    if (!done || saved || saving || !user) return;
+    setSaving(true);
+    markLessonComplete({
       lessonId: content.id,
-      title: content.title,
-      completed: true,
       quizCorrect: correct,
       quizTotal: content.quiz.length,
-      updatedAt: new Date().toISOString(),
-    });
-  }, [done, correct, content.id, content.title, content.quiz.length]);
+    })
+      .then((res) => {
+        setSaved(true);
+        if (res.xpEarned > 0) {
+          toast.success(`+${res.xpEarned} XP! Sabaq mukammal 🎉`);
+        }
+      })
+      .catch((e) => {
+        console.error(e);
+        toast.error("Progress save nahi hua. Dobara koshish karein.");
+      })
+      .finally(() => setSaving(false));
+  }, [done, saved, saving, correct, content.id, content.quiz.length, user]);
 
   return (
     <section className="mx-auto max-w-4xl px-4 py-16 sm:px-6">
