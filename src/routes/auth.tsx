@@ -1,4 +1,4 @@
-import { createFileRoute, useNavigate, Link } from "@tanstack/react-router";
+import { createFileRoute, useNavigate, Link, useSearch } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { getDashboardPath, useAuth } from "@/hooks/useAuth";
 import { Button } from "@/components/ui/button";
@@ -8,12 +8,15 @@ import { Card } from "@/components/ui/card";
 import { toast } from "sonner";
 
 export const Route = createFileRoute("/auth")({
+  validateSearch: (s: Record<string, unknown>): { redirect?: string } =>
+    typeof s.redirect === "string" ? { redirect: s.redirect } : {},
   component: AuthPage,
 });
 
 function AuthPage() {
   const { signIn, signUp, user, role, loading, roleLoading } = useAuth();
   const navigate = useNavigate();
+  const { redirect } = useSearch({ from: "/auth" });
   const [mode, setMode] = useState<"login" | "signup">("login");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -23,9 +26,9 @@ function AuthPage() {
   useEffect(() => {
     if (loading || roleLoading) return;
     if (user && role) {
-      navigate({ to: getDashboardPath(role), replace: true });
+      navigate({ to: redirect ?? getDashboardPath(role), replace: true });
     }
-  }, [user, role, loading, roleLoading, navigate]);
+  }, [user, role, loading, roleLoading, navigate, redirect]);
 
   const onSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -38,7 +41,8 @@ function AuthPage() {
       toast.error(error);
     } else {
       toast.success(mode === "login" ? "Welcome back!" : "Account banaya gaya!");
-      if (nextRole) navigate({ to: getDashboardPath(nextRole), replace: true });
+      if (nextRole) navigate({ to: redirect ?? getDashboardPath(nextRole), replace: true });
+      else if (redirect) navigate({ to: redirect, replace: true });
     }
   };
 

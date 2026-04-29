@@ -10,6 +10,7 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as TermsRouteImport } from './routes/terms'
+import { Route as StarterKitRouteImport } from './routes/starter-kit'
 import { Route as SafetyRouteImport } from './routes/safety'
 import { Route as PrivacyRouteImport } from './routes/privacy'
 import { Route as ParentsRouteImport } from './routes/parents'
@@ -41,6 +42,11 @@ import { Route as DashboardChildRouteImport } from './routes/dashboard.child'
 const TermsRoute = TermsRouteImport.update({
   id: '/terms',
   path: '/terms',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const StarterKitRoute = StarterKitRouteImport.update({
+  id: '/starter-kit',
+  path: '/starter-kit',
   getParentRoute: () => rootRouteImport,
 } as any)
 const SafetyRoute = SafetyRouteImport.update({
@@ -196,6 +202,7 @@ export interface FileRoutesByFullPath {
   '/parents': typeof ParentsRoute
   '/privacy': typeof PrivacyRoute
   '/safety': typeof SafetyRoute
+  '/starter-kit': typeof StarterKitRoute
   '/terms': typeof TermsRoute
   '/dashboard/child': typeof DashboardChildRoute
   '/dashboard/parent': typeof DashboardParentRoute
@@ -226,6 +233,7 @@ export interface FileRoutesByTo {
   '/parents': typeof ParentsRoute
   '/privacy': typeof PrivacyRoute
   '/safety': typeof SafetyRoute
+  '/starter-kit': typeof StarterKitRoute
   '/terms': typeof TermsRoute
   '/dashboard/child': typeof DashboardChildRoute
   '/dashboard/parent': typeof DashboardParentRoute
@@ -257,6 +265,7 @@ export interface FileRoutesById {
   '/parents': typeof ParentsRoute
   '/privacy': typeof PrivacyRoute
   '/safety': typeof SafetyRoute
+  '/starter-kit': typeof StarterKitRoute
   '/terms': typeof TermsRoute
   '/dashboard/child': typeof DashboardChildRoute
   '/dashboard/parent': typeof DashboardParentRoute
@@ -289,6 +298,7 @@ export interface FileRouteTypes {
     | '/parents'
     | '/privacy'
     | '/safety'
+    | '/starter-kit'
     | '/terms'
     | '/dashboard/child'
     | '/dashboard/parent'
@@ -319,6 +329,7 @@ export interface FileRouteTypes {
     | '/parents'
     | '/privacy'
     | '/safety'
+    | '/starter-kit'
     | '/terms'
     | '/dashboard/child'
     | '/dashboard/parent'
@@ -349,6 +360,7 @@ export interface FileRouteTypes {
     | '/parents'
     | '/privacy'
     | '/safety'
+    | '/starter-kit'
     | '/terms'
     | '/dashboard/child'
     | '/dashboard/parent'
@@ -380,6 +392,7 @@ export interface RootRouteChildren {
   ParentsRoute: typeof ParentsRoute
   PrivacyRoute: typeof PrivacyRoute
   SafetyRoute: typeof SafetyRoute
+  StarterKitRoute: typeof StarterKitRoute
   TermsRoute: typeof TermsRoute
   DashboardChildRoute: typeof DashboardChildRoute
   DashboardParentRoute: typeof DashboardParentRoute
@@ -392,6 +405,13 @@ declare module '@tanstack/react-router' {
       path: '/terms'
       fullPath: '/terms'
       preLoaderRoute: typeof TermsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/starter-kit': {
+      id: '/starter-kit'
+      path: '/starter-kit'
+      fullPath: '/starter-kit'
+      preLoaderRoute: typeof StarterKitRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/safety': {
@@ -634,6 +654,7 @@ const rootRouteChildren: RootRouteChildren = {
   ParentsRoute: ParentsRoute,
   PrivacyRoute: PrivacyRoute,
   SafetyRoute: SafetyRoute,
+  StarterKitRoute: StarterKitRoute,
   TermsRoute: TermsRoute,
   DashboardChildRoute: DashboardChildRoute,
   DashboardParentRoute: DashboardParentRoute,
