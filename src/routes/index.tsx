@@ -41,6 +41,9 @@ function HomePage() {
                 <Link to="/lessons">Start First Lesson <ArrowRight className="h-4 w-4" /></Link>
               </Button>
               <Button asChild variant="soft" size="xl">
+                <Link to="/starter-kit">🎁 Muft Starter Kit</Link>
+              </Button>
+              <Button asChild variant="ghost" size="xl">
                 <Link to="/parents">For Parents</Link>
               </Button>
             </div>
