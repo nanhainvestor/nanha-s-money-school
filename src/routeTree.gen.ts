@@ -37,6 +37,7 @@ import { Route as LessonsEarningBeyondPocketMoneyRouteImport } from './routes/le
 import { Route as LessonsCountingCoinsRouteImport } from './routes/lessons.counting-coins'
 import { Route as LessonsCompoundInterestRouteImport } from './routes/lessons.compound-interest'
 import { Route as LessonsBudgetingLikeABossRouteImport } from './routes/lessons.budgeting-like-a-boss'
+import { Route as LessonsSplatRouteImport } from './routes/lessons.$'
 import { Route as DashboardParentRouteImport } from './routes/dashboard.parent'
 import { Route as DashboardChildRouteImport } from './routes/dashboard.child'
 
@@ -184,6 +185,11 @@ const LessonsBudgetingLikeABossRoute =
     path: '/budgeting-like-a-boss',
     getParentRoute: () => LessonsRoute,
   } as any)
+const LessonsSplatRoute = LessonsSplatRouteImport.update({
+  id: '/$',
+  path: '/$',
+  getParentRoute: () => LessonsRoute,
+} as any)
 const DashboardParentRoute = DashboardParentRouteImport.update({
   id: '/dashboard/parent',
   path: '/dashboard/parent',
@@ -212,6 +218,7 @@ export interface FileRoutesByFullPath {
   '/terms': typeof TermsRoute
   '/dashboard/child': typeof DashboardChildRoute
   '/dashboard/parent': typeof DashboardParentRoute
+  '/lessons/$': typeof LessonsSplatRoute
   '/lessons/budgeting-like-a-boss': typeof LessonsBudgetingLikeABossRoute
   '/lessons/compound-interest': typeof LessonsCompoundInterestRoute
   '/lessons/counting-coins': typeof LessonsCountingCoinsRoute
@@ -243,6 +250,7 @@ export interface FileRoutesByTo {
   '/terms': typeof TermsRoute
   '/dashboard/child': typeof DashboardChildRoute
   '/dashboard/parent': typeof DashboardParentRoute
+  '/lessons/$': typeof LessonsSplatRoute
   '/lessons/budgeting-like-a-boss': typeof LessonsBudgetingLikeABossRoute
   '/lessons/compound-interest': typeof LessonsCompoundInterestRoute
   '/lessons/counting-coins': typeof LessonsCountingCoinsRoute
@@ -276,6 +284,7 @@ export interface FileRoutesById {
   '/terms': typeof TermsRoute
   '/dashboard/child': typeof DashboardChildRoute
   '/dashboard/parent': typeof DashboardParentRoute
+  '/lessons/$': typeof LessonsSplatRoute
   '/lessons/budgeting-like-a-boss': typeof LessonsBudgetingLikeABossRoute
   '/lessons/compound-interest': typeof LessonsCompoundInterestRoute
   '/lessons/counting-coins': typeof LessonsCountingCoinsRoute
@@ -310,6 +319,7 @@ export interface FileRouteTypes {
     | '/terms'
     | '/dashboard/child'
     | '/dashboard/parent'
+    | '/lessons/$'
     | '/lessons/budgeting-like-a-boss'
     | '/lessons/compound-interest'
     | '/lessons/counting-coins'
@@ -341,6 +351,7 @@ export interface FileRouteTypes {
     | '/terms'
     | '/dashboard/child'
     | '/dashboard/parent'
+    | '/lessons/$'
     | '/lessons/budgeting-like-a-boss'
     | '/lessons/compound-interest'
     | '/lessons/counting-coins'
@@ -373,6 +384,7 @@ export interface FileRouteTypes {
     | '/terms'
     | '/dashboard/child'
     | '/dashboard/parent'
+    | '/lessons/$'
     | '/lessons/budgeting-like-a-boss'
     | '/lessons/compound-interest'
     | '/lessons/counting-coins'
@@ -606,6 +618,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LessonsBudgetingLikeABossRouteImport
       parentRoute: typeof LessonsRoute
     }
+    '/lessons/$': {
+      id: '/lessons/$'
+      path: '/$'
+      fullPath: '/lessons/$'
+      preLoaderRoute: typeof LessonsSplatRouteImport
+      parentRoute: typeof LessonsRoute
+    }
     '/dashboard/parent': {
       id: '/dashboard/parent'
       path: '/dashboard/parent'
@@ -624,6 +643,7 @@ declare module '@tanstack/react-router' {
 }
 
 interface LessonsRouteChildren {
+  LessonsSplatRoute: typeof LessonsSplatRoute
   LessonsBudgetingLikeABossRoute: typeof LessonsBudgetingLikeABossRoute
   LessonsCompoundInterestRoute: typeof LessonsCompoundInterestRoute
   LessonsCountingCoinsRoute: typeof LessonsCountingCoinsRoute
@@ -641,6 +661,7 @@ interface LessonsRouteChildren {
 }
 
 const LessonsRouteChildren: LessonsRouteChildren = {
+  LessonsSplatRoute: LessonsSplatRoute,
   LessonsBudgetingLikeABossRoute: LessonsBudgetingLikeABossRoute,
   LessonsCompoundInterestRoute: LessonsCompoundInterestRoute,
   LessonsCountingCoinsRoute: LessonsCountingCoinsRoute,
