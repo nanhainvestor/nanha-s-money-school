@@ -81,16 +81,12 @@ function LessonGate({ lessonId, children }: { lessonId: string; children: React.
   const { user, loading: authLoading } = useAuth();
   const { data, loading } = useLMS();
 
-  if (authLoading || (user && loading)) {
-    return (
-      <div className="mx-auto max-w-4xl px-4 py-20 text-center text-sm text-muted-foreground">
-        Sabaq load ho raha hai…
-      </div>
-    );
-  }
-
-  // Guests can preview lessons (no progress saved). Logged-in users get the gate.
+  // Render lesson content immediately. Auth + LMS resolve in the background;
+  // if it turns out the lesson is locked, swap to the lock screen. This avoids
+  // a blank "loading" page on every lesson click.
+  if (authLoading) return <>{children}</>;
   if (!user) return <>{children}</>;
+  if (loading) return <>{children}</>;
 
   const state = lessonState(lessonId, data.progress);
   if (state === "locked") {
