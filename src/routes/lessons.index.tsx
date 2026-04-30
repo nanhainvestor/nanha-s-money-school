@@ -5,7 +5,7 @@ import { LESSONS, TRACKS, type LessonMeta } from "@/lib/lessons-catalog";
 import { useLMS, lessonState } from "@/hooks/useLMS";
 import { useAuth } from "@/hooks/useAuth";
 
-export const Route = createFileRoute("/lessons")({
+export const Route = createFileRoute("/lessons/")({
   head: () => ({
     meta: [
       { title: "Sabaq — Bachon ke Liye Paisay ki Taleem | Nanha Investor" },

@@ -15,7 +15,6 @@ import { Route as SafetyRouteImport } from './routes/safety'
 import { Route as PrivacyRouteImport } from './routes/privacy'
 import { Route as ParentsRouteImport } from './routes/parents'
 import { Route as NotebookRouteImport } from './routes/notebook'
-import { Route as LessonsRouteImport } from './routes/lessons'
 import { Route as FaqRouteImport } from './routes/faq'
 import { Route as CookiesRouteImport } from './routes/cookies'
 import { Route as ContactRouteImport } from './routes/contact'
@@ -23,6 +22,7 @@ import { Route as AuthRouteImport } from './routes/auth'
 import { Route as AdminRouteImport } from './routes/admin'
 import { Route as AboutRouteImport } from './routes/about'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as LessonsIndexRouteImport } from './routes/lessons.index'
 import { Route as LessonsWhereMoneyComesFromRouteImport } from './routes/lessons.where-money-comes-from'
 import { Route as LessonsWhatIsInflationRouteImport } from './routes/lessons.what-is-inflation'
 import { Route as LessonsWhatIsABankRouteImport } from './routes/lessons.what-is-a-bank'
@@ -69,11 +69,6 @@ const NotebookRoute = NotebookRouteImport.update({
   path: '/notebook',
   getParentRoute: () => rootRouteImport,
 } as any)
-const LessonsRoute = LessonsRouteImport.update({
-  id: '/lessons',
-  path: '/lessons',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const FaqRoute = FaqRouteImport.update({
   id: '/faq',
   path: '/faq',
@@ -107,6 +102,11 @@ const AboutRoute = AboutRouteImport.update({
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const LessonsIndexRoute = LessonsIndexRouteImport.update({
+  id: '/lessons/',
+  path: '/lessons/',
   getParentRoute: () => rootRouteImport,
 } as any)
 const LessonsWhereMoneyComesFromRoute =
@@ -197,7 +197,6 @@ export interface FileRoutesByFullPath {
   '/contact': typeof ContactRoute
   '/cookies': typeof CookiesRoute
   '/faq': typeof FaqRoute
-  '/lessons': typeof LessonsRouteWithChildren
   '/notebook': typeof NotebookRoute
   '/parents': typeof ParentsRoute
   '/privacy': typeof PrivacyRoute
@@ -219,6 +218,7 @@ export interface FileRoutesByFullPath {
   '/lessons/what-is-a-bank': typeof LessonsWhatIsABankRoute
   '/lessons/what-is-inflation': typeof LessonsWhatIsInflationRoute
   '/lessons/where-money-comes-from': typeof LessonsWhereMoneyComesFromRoute
+  '/lessons/': typeof LessonsIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -228,7 +228,6 @@ export interface FileRoutesByTo {
   '/contact': typeof ContactRoute
   '/cookies': typeof CookiesRoute
   '/faq': typeof FaqRoute
-  '/lessons': typeof LessonsRouteWithChildren
   '/notebook': typeof NotebookRoute
   '/parents': typeof ParentsRoute
   '/privacy': typeof PrivacyRoute
@@ -250,6 +249,7 @@ export interface FileRoutesByTo {
   '/lessons/what-is-a-bank': typeof LessonsWhatIsABankRoute
   '/lessons/what-is-inflation': typeof LessonsWhatIsInflationRoute
   '/lessons/where-money-comes-from': typeof LessonsWhereMoneyComesFromRoute
+  '/lessons': typeof LessonsIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -260,7 +260,6 @@ export interface FileRoutesById {
   '/contact': typeof ContactRoute
   '/cookies': typeof CookiesRoute
   '/faq': typeof FaqRoute
-  '/lessons': typeof LessonsRouteWithChildren
   '/notebook': typeof NotebookRoute
   '/parents': typeof ParentsRoute
   '/privacy': typeof PrivacyRoute
@@ -282,6 +281,7 @@ export interface FileRoutesById {
   '/lessons/what-is-a-bank': typeof LessonsWhatIsABankRoute
   '/lessons/what-is-inflation': typeof LessonsWhatIsInflationRoute
   '/lessons/where-money-comes-from': typeof LessonsWhereMoneyComesFromRoute
+  '/lessons/': typeof LessonsIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -293,7 +293,6 @@ export interface FileRouteTypes {
     | '/contact'
     | '/cookies'
     | '/faq'
-    | '/lessons'
     | '/notebook'
     | '/parents'
     | '/privacy'
@@ -315,6 +314,7 @@ export interface FileRouteTypes {
     | '/lessons/what-is-a-bank'
     | '/lessons/what-is-inflation'
     | '/lessons/where-money-comes-from'
+    | '/lessons/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -324,7 +324,6 @@ export interface FileRouteTypes {
     | '/contact'
     | '/cookies'
     | '/faq'
-    | '/lessons'
     | '/notebook'
     | '/parents'
     | '/privacy'
@@ -346,6 +345,7 @@ export interface FileRouteTypes {
     | '/lessons/what-is-a-bank'
     | '/lessons/what-is-inflation'
     | '/lessons/where-money-comes-from'
+    | '/lessons'
   id:
     | '__root__'
     | '/'
@@ -355,7 +355,6 @@ export interface FileRouteTypes {
     | '/contact'
     | '/cookies'
     | '/faq'
-    | '/lessons'
     | '/notebook'
     | '/parents'
     | '/privacy'
@@ -377,6 +376,7 @@ export interface FileRouteTypes {
     | '/lessons/what-is-a-bank'
     | '/lessons/what-is-inflation'
     | '/lessons/where-money-comes-from'
+    | '/lessons/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -387,7 +387,6 @@ export interface RootRouteChildren {
   ContactRoute: typeof ContactRoute
   CookiesRoute: typeof CookiesRoute
   FaqRoute: typeof FaqRoute
-  LessonsRoute: typeof LessonsRouteWithChildren
   NotebookRoute: typeof NotebookRoute
   ParentsRoute: typeof ParentsRoute
   PrivacyRoute: typeof PrivacyRoute
@@ -396,6 +395,7 @@ export interface RootRouteChildren {
   TermsRoute: typeof TermsRoute
   DashboardChildRoute: typeof DashboardChildRoute
   DashboardParentRoute: typeof DashboardParentRoute
+  LessonsIndexRoute: typeof LessonsIndexRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -440,13 +440,6 @@ declare module '@tanstack/react-router' {
       path: '/notebook'
       fullPath: '/notebook'
       preLoaderRoute: typeof NotebookRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/lessons': {
-      id: '/lessons'
-      path: '/lessons'
-      fullPath: '/lessons'
-      preLoaderRoute: typeof LessonsRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/faq': {
@@ -496,6 +489,13 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/lessons/': {
+      id: '/lessons/'
+      path: '/lessons'
+      fullPath: '/lessons/'
+      preLoaderRoute: typeof LessonsIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/lessons/where-money-comes-from': {
@@ -606,41 +606,6 @@ declare module '@tanstack/react-router' {
   }
 }
 
-interface LessonsRouteChildren {
-  LessonsBudgetingLikeABossRoute: typeof LessonsBudgetingLikeABossRoute
-  LessonsCompoundInterestRoute: typeof LessonsCompoundInterestRoute
-  LessonsCountingCoinsRoute: typeof LessonsCountingCoinsRoute
-  LessonsEarningBeyondPocketMoneyRoute: typeof LessonsEarningBeyondPocketMoneyRoute
-  LessonsNeedsVsWantsRoute: typeof LessonsNeedsVsWantsRoute
-  LessonsPiggyBankMagicRoute: typeof LessonsPiggyBankMagicRoute
-  LessonsPurposeOfMoneyRoute: typeof LessonsPurposeOfMoneyRoute
-  LessonsSharingGivingRoute: typeof LessonsSharingGivingRoute
-  LessonsSmartOnlineSpendingRoute: typeof LessonsSmartOnlineSpendingRoute
-  LessonsStocksMadeSimpleRoute: typeof LessonsStocksMadeSimpleRoute
-  LessonsWhatIsABankRoute: typeof LessonsWhatIsABankRoute
-  LessonsWhatIsInflationRoute: typeof LessonsWhatIsInflationRoute
-  LessonsWhereMoneyComesFromRoute: typeof LessonsWhereMoneyComesFromRoute
-}
-
-const LessonsRouteChildren: LessonsRouteChildren = {
-  LessonsBudgetingLikeABossRoute: LessonsBudgetingLikeABossRoute,
-  LessonsCompoundInterestRoute: LessonsCompoundInterestRoute,
-  LessonsCountingCoinsRoute: LessonsCountingCoinsRoute,
-  LessonsEarningBeyondPocketMoneyRoute: LessonsEarningBeyondPocketMoneyRoute,
-  LessonsNeedsVsWantsRoute: LessonsNeedsVsWantsRoute,
-  LessonsPiggyBankMagicRoute: LessonsPiggyBankMagicRoute,
-  LessonsPurposeOfMoneyRoute: LessonsPurposeOfMoneyRoute,
-  LessonsSharingGivingRoute: LessonsSharingGivingRoute,
-  LessonsSmartOnlineSpendingRoute: LessonsSmartOnlineSpendingRoute,
-  LessonsStocksMadeSimpleRoute: LessonsStocksMadeSimpleRoute,
-  LessonsWhatIsABankRoute: LessonsWhatIsABankRoute,
-  LessonsWhatIsInflationRoute: LessonsWhatIsInflationRoute,
-  LessonsWhereMoneyComesFromRoute: LessonsWhereMoneyComesFromRoute,
-}
-
-const LessonsRouteWithChildren =
-  LessonsRoute._addFileChildren(LessonsRouteChildren)
-
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AboutRoute: AboutRoute,
@@ -649,7 +614,6 @@ const rootRouteChildren: RootRouteChildren = {
   ContactRoute: ContactRoute,
   CookiesRoute: CookiesRoute,
   FaqRoute: FaqRoute,
-  LessonsRoute: LessonsRouteWithChildren,
   NotebookRoute: NotebookRoute,
   ParentsRoute: ParentsRoute,
   PrivacyRoute: PrivacyRoute,
@@ -658,6 +622,7 @@ const rootRouteChildren: RootRouteChildren = {
   TermsRoute: TermsRoute,
   DashboardChildRoute: DashboardChildRoute,
   DashboardParentRoute: DashboardParentRoute,
+  LessonsIndexRoute: LessonsIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
