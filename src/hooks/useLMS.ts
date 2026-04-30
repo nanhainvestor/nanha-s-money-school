@@ -1,5 +1,7 @@
-// React hook + helpers around the LMS server functions. Caches data in
-// component state and exposes a refresh() helper. Use from pages/components.
+// React hook + helpers around the LMS server functions.
+// Uses a module-level cache + in-flight promise so navigating between lessons
+// doesn't re-fetch progress on every mount (which caused long loading spinners
+// and perceived "redirects" between lesson pages).
 
 import { useCallback, useEffect, useState } from "react";
 import { getMyProgress, completeLesson, type LMSData, type ProgressRow } from "@/server/lms.functions";
@@ -12,20 +14,55 @@ const EMPTY: LMSData = {
   badges: [],
 };
 
+// ---- module-level shared state ----
+let cache: { userId: string | null; data: LMSData } | null = null;
+let inflight: Promise<LMSData> | null = null;
+const subscribers = new Set<(d: LMSData) => void>();
+
+function notify(d: LMSData) {
+  for (const s of subscribers) s(d);
+}
+
+async function loadProgress(userId: string): Promise<LMSData> {
+  if (cache && cache.userId === userId) return cache.data;
+  if (inflight) return inflight;
+  inflight = getMyProgress()
+    .then((d) => {
+      cache = { userId, data: d };
+      notify(d);
+      return d;
+    })
+    .finally(() => {
+      inflight = null;
+    });
+  return inflight;
+}
+
+export function invalidateLMS() {
+  cache = null;
+}
+
 export function useLMS() {
   const { user, loading: authLoading } = useAuth();
-  const [data, setData] = useState<LMSData>(EMPTY);
-  const [loading, setLoading] = useState(true);
+  const initial = cache && user && cache.userId === user.id ? cache.data : EMPTY;
+  const [data, setData] = useState<LMSData>(initial);
+  // Only show loading when we truly have nothing cached for this user.
+  const [loading, setLoading] = useState<boolean>(
+    !!user && !(cache && cache.userId === user.id),
+  );
   const [error, setError] = useState<string | null>(null);
 
   const refresh = useCallback(async () => {
     if (!user) {
+      cache = null;
       setData(EMPTY);
       setLoading(false);
       return;
     }
     try {
-      const next = await getMyProgress();
+      // Force refresh: drop cache for this user
+      if (cache?.userId === user.id) cache = null;
+      const next = await loadProgress(user.id);
       setData(next);
       setError(null);
     } catch (e: any) {
@@ -36,11 +73,40 @@ export function useLMS() {
     }
   }, [user]);
 
+  // Initial / user-change load
   useEffect(() => {
     if (authLoading) return;
+    if (!user) {
+      setData(EMPTY);
+      setLoading(false);
+      return;
+    }
+    if (cache && cache.userId === user.id) {
+      setData(cache.data);
+      setLoading(false);
+      return;
+    }
     setLoading(true);
-    refresh();
-  }, [authLoading, refresh]);
+    loadProgress(user.id)
+      .then((d) => {
+        setData(d);
+        setError(null);
+      })
+      .catch((e) => {
+        console.error("LMS load failed", e);
+        setError(e?.message ?? "Failed to load progress");
+      })
+      .finally(() => setLoading(false));
+  }, [authLoading, user]);
+
+  // Subscribe to cross-component updates (e.g. after completing a lesson).
+  useEffect(() => {
+    const onData = (d: LMSData) => setData(d);
+    subscribers.add(onData);
+    return () => {
+      subscribers.delete(onData);
+    };
+  }, []);
 
   useEffect(() => {
     const onUpdate = () => refresh();
@@ -81,6 +147,8 @@ export async function markLessonComplete(input: {
   quizTotal: number;
 }) {
   const res = await completeLesson({ data: input });
+  // Drop cache so next read pulls fresh stats/badges/progress.
+  cache = null;
   if (typeof window !== "undefined") {
     window.dispatchEvent(new CustomEvent("nanha:lms-updated"));
   }
