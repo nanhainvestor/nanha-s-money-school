@@ -21,10 +21,13 @@ export const Route = createFileRoute("/dashboard/child")({
 function ChildDashboard() {
   const { user, signOut } = useAuth();
   const { data, loading } = useLMS();
+  const progress = data?.progress ?? [];
+  const stats = data?.stats ?? { total_xp: 0, current_streak: 0, longest_streak: 0, last_active_date: null };
+  const badges = data?.badges ?? [];
 
-  const completed = data.progress.filter((p) => p.completed).length;
+  const completed = progress.filter((p) => p.completed).length;
   const pct = Math.round((completed / LESSONS.length) * 100);
-  const next = LESSONS.find((l) => lessonState(l.id, data.progress) !== "completed");
+  const next = LESSONS.find((l) => lessonState(l.id, progress) !== "completed");
 
   return (
     <div className="mx-auto max-w-6xl px-4 py-10">
