@@ -21,10 +21,13 @@ export const Route = createFileRoute("/dashboard/child")({
 function ChildDashboard() {
   const { user, signOut } = useAuth();
   const { data, loading } = useLMS();
+  const progress = data?.progress ?? [];
+  const stats = data?.stats ?? { total_xp: 0, current_streak: 0, longest_streak: 0, last_active_date: null };
+  const badges = data?.badges ?? [];
 
-  const completed = data.progress.filter((p) => p.completed).length;
+  const completed = progress.filter((p) => p.completed).length;
   const pct = Math.round((completed / LESSONS.length) * 100);
-  const next = LESSONS.find((l) => lessonState(l.id, data.progress) !== "completed");
+  const next = LESSONS.find((l) => lessonState(l.id, progress) !== "completed");
 
   return (
     <div className="mx-auto max-w-6xl px-4 py-10">
@@ -58,17 +61,17 @@ function ChildDashboard() {
         </Card>
         <Card className="p-5">
           <div className="flex items-center gap-3"><Star className="h-5 w-5 text-yellow-500" /><span className="text-sm text-muted-foreground">Total XP</span></div>
-          <p className="mt-2 text-3xl font-bold">{data.stats.total_xp}</p>
+          <p className="mt-2 text-3xl font-bold">{stats.total_xp}</p>
           <p className="mt-1 text-xs text-muted-foreground">Khud kamaye hue points</p>
         </Card>
         <Card className="p-5">
           <div className="flex items-center gap-3"><Flame className="h-5 w-5 text-orange-500" /><span className="text-sm text-muted-foreground">Streak</span></div>
-          <p className="mt-2 text-3xl font-bold">{data.stats.current_streak} <span className="text-base font-normal text-muted-foreground">din</span></p>
-          <p className="mt-1 text-xs text-muted-foreground">Best: {data.stats.longest_streak}</p>
+          <p className="mt-2 text-3xl font-bold">{stats.current_streak} <span className="text-base font-normal text-muted-foreground">din</span></p>
+          <p className="mt-1 text-xs text-muted-foreground">Best: {stats.longest_streak}</p>
         </Card>
         <Card className="p-5">
           <div className="flex items-center gap-3"><Trophy className="h-5 w-5 text-amber-500" /><span className="text-sm text-muted-foreground">Badges</span></div>
-          <p className="mt-2 text-3xl font-bold">{data.badges.length}/{BADGES.length}</p>
+          <p className="mt-2 text-3xl font-bold">{badges.length}/{BADGES.length}</p>
           <p className="mt-1 text-xs text-muted-foreground">Inami nishaniyaan</p>
         </Card>
       </div>
@@ -79,7 +82,7 @@ function ChildDashboard() {
           <div className="mt-4 space-y-4">
             {TRACKS.map((track) => {
               const trackLessons = LESSONS.filter((l) => l.track === track.key);
-              const trackDone = trackLessons.filter((l) => data.progress.find((p) => p.lesson_id === l.id && p.completed)).length;
+              const trackDone = trackLessons.filter((l) => progress.find((p) => p.lesson_id === l.id && p.completed)).length;
               return (
                 <div key={track.key}>
                   <div className="mb-2 flex items-center justify-between">
@@ -88,8 +91,8 @@ function ChildDashboard() {
                   </div>
                   <div className="space-y-2">
                     {trackLessons.map((l) => {
-                      const state = lessonState(l.id, data.progress);
-                      const row = data.progress.find((p) => p.lesson_id === l.id);
+                      const state = lessonState(l.id, progress);
+                      const row = progress.find((p) => p.lesson_id === l.id);
                       return (
                         <div key={l.id} className={`flex items-center justify-between rounded-lg border p-3 ${state === "locked" ? "border-dashed bg-muted/30 opacity-60" : "border-border"}`}>
                           <div className="min-w-0">
@@ -122,7 +125,7 @@ function ChildDashboard() {
             <h2 className="font-display text-xl font-bold">Badges</h2>
             <div className="mt-4 grid grid-cols-2 gap-3">
               {BADGES.map((b) => {
-                const earned = data.badges.includes(b.code);
+                const earned = badges.includes(b.code);
                 return (
                   <div key={b.code} className={`rounded-xl border p-3 text-center ${earned ? "border-primary/40 bg-primary-soft" : "border-dashed border-border bg-muted/20 opacity-60"}`}>
                     <div className="text-3xl">{earned ? b.emoji : "🔒"}</div>

@@ -23,14 +23,23 @@ function notify(d: LMSData) {
   for (const s of subscribers) s(d);
 }
 
+function normalize(d: any): LMSData {
+  return {
+    progress: Array.isArray(d?.progress) ? d.progress : [],
+    stats: d?.stats ?? EMPTY.stats,
+    badges: Array.isArray(d?.badges) ? d.badges : [],
+  };
+}
+
 async function loadProgress(userId: string): Promise<LMSData> {
   if (cache && cache.userId === userId) return cache.data;
   if (inflight) return inflight;
   inflight = getMyProgress()
     .then((d) => {
-      cache = { userId, data: d };
-      notify(d);
-      return d;
+      const safe = normalize(d);
+      cache = { userId, data: safe };
+      notify(safe);
+      return safe;
     })
     .finally(() => {
       inflight = null;
